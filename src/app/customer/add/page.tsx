@@ -15,7 +15,7 @@ import { getCity } from "@/store/masters/city/city";
 import { getLocation, getLocationByCity } from "@/store/masters/location/location";
 import { handleFieldOptions } from "@/app/utils/handleFieldOptions";
 import { getSubtype, getSubtypeByCampaignAndType } from "@/store/masters/subtype/subtype";
-import {  getSkill } from "@/store/masters/skill/skill";
+import { getSkill } from "@/store/masters/skill/skill";
 import BackButton from "@/app/component/buttons/BackButton";
 import SaveButton from "@/app/component/buttons/SaveButton";
 import { handleFieldOptionsObject } from "@/app/utils/handleFieldOptionsObject";
@@ -43,8 +43,8 @@ export default function CustomerAdd() {
     Address: "",
     Email: "",
     Skill: "",
-    url:"",
-    salaryRange:"",
+    url: "",
+    salaryRange: "",
     ReferenceId: "",
     CustomerId: "",
     CustomerDate: "",
@@ -64,16 +64,16 @@ export default function CustomerAdd() {
   const router = useRouter();
 
 
-const handleContactExist = async (contactNo: string) => { 
-  const duplicate = await isContactNoExist(contactNo);
+  const handleContactExist = async (contactNo: string) => {
+    const duplicate = await isContactNoExist(contactNo);
     if (duplicate) return;
-}
+  }
 
   // 🟩 Handle Input
   const handleInputChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       const { name, value } = e.target;
-      if(name==="ContactNumber"){
+      if (name === "ContactNumber") {
         handleContactExist(value);
       }
       setCustomerData((prev) => ({ ...prev, [name]: value }));
@@ -139,94 +139,94 @@ const handleContactExist = async (contactNo: string) => {
   };
 
   const trimCountryCode = (num: string) => {
-  if (!num) return "";
-  return num.startsWith("+91") ? num.slice(3) : num;
-};
+    if (!num) return "";
+    return num.startsWith("+91") ? num.slice(3) : num;
+  };
 
-    const isContactNoExist = async (contactNo: string) => {
-      if (contactNo.trim().length > 0 && contactNo.trim().length < 10) {
-        setErrors((prev) => ({
-          ...prev,
-          ContactNumber: "Contact No should at least 10 digits",
-        }));
-        return true;
-      }
-      if(contactNo.trim().length === 0){
-        return false;
-      }
-      
-      const res = await getFilteredCustomer(`Keyword=${contactNo}`);
-      const isExist = res.length;
-  
-      if (isExist && isExist > 0) {
-        setErrors((prev) => ({
-          ...prev,
-          ContactNumber: "Contact No already exists",
-        }));
-        return true;
-      }
-  
+  const isContactNoExist = async (contactNo: string) => {
+    if (contactNo.trim().length > 0 && contactNo.trim().length < 10) {
+      setErrors((prev) => ({
+        ...prev,
+        ContactNumber: "Contact No should at least 10 digits",
+      }));
+      return true;
+    }
+    if (contactNo.trim().length === 0) {
       return false;
-    };
+    }
+
+    const res = await getFilteredCustomer(`Keyword=${contactNo}`);
+    const isExist = res.length;
+
+    if (isExist && isExist > 0) {
+      setErrors((prev) => ({
+        ...prev,
+        ContactNumber: "Contact No already exists",
+      }));
+      return true;
+    }
+
+    return false;
+  };
 
   // 🟩 Submit Form
   const handleSubmit = async () => {
-     const duplicate = await isContactNoExist(customerData.ContactNumber);
+    const duplicate = await isContactNoExist(customerData.ContactNumber);
     if (duplicate) return;
 
 
-    
+
     const validationErrors = validateForm();
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       return;
     }
-    
-      const formData = new FormData();
 
-      // Append fields
+    const formData = new FormData();
 
-      if (customerData.Campaign) formData.append("Campaign", customerData.Campaign.name);
-      if (customerData.CustomerType) formData.append("CustomerType", customerData.CustomerType.name);
-      if (customerData.customerName) formData.append("customerName", customerData.customerName);
-      if (customerData.CustomerSubtype) formData.append("CustomerSubType", customerData.CustomerSubtype?.name);
-      if (customerData.ContactNumber) formData.append("ContactNumber", trimCountryCodeHelper(customerData.ContactNumber));
-      if (customerData.City) formData.append("City", customerData.City.name);
-      if (customerData.Location) formData.append("Location", customerData.Location?.name);
-      if (customerData.Exprience) formData.append("Exprience", customerData.Exprience);
-      if (customerData.Address) formData.append("Adderess", customerData.Address);
-      if (customerData.Email) formData.append("Email", customerData.Email);
-      if (customerData.Skill) formData.append("Skill", customerData.Skill);
-       if (customerData.url) formData.append("url", customerData.url);
-       if (customerData.salaryRange) formData.append("salaryRange", customerData.salaryRange);
-      if (customerData.ReferenceId) formData.append("ReferenceId", customerData.ReferenceId);
-      if (customerData.CustomerId) formData.append("CustomerId", customerData.CustomerId);
-      if (customerData.CustomerDate) formData.append("CustomerDate", customerData.CustomerDate);
-      if (customerData.CustomerYear) formData.append("CustomerYear", customerData.CustomerYear);
-      if (customerData.Other) formData.append("Other", customerData.Other);
-      if (customerData.Description) formData.append("Description", customerData.Description);
-      if (customerData.Video) formData.append("Video", customerData.Video);
-      if (customerData.GoogleMap) formData.append("GoogleMap", customerData.GoogleMap);
-      if (customerData.Verified) formData.append("Verified", customerData.Verified);
+    // Append fields
 
-      // Append files correctly
-      if (Array.isArray(customerData.CustomerImage)) {
-        customerData.CustomerImage.forEach((file) => formData.append("CustomerImage", file));
-      }
+    if (customerData.Campaign) formData.append("Campaign", customerData.Campaign.name);
+    if (customerData.CustomerType) formData.append("CustomerType", customerData.CustomerType.name);
+    if (customerData.customerName) formData.append("customerName", customerData.customerName);
+    if (customerData.CustomerSubtype) formData.append("CustomerSubType", customerData.CustomerSubtype?.name);
+    if (customerData.ContactNumber) formData.append("ContactNumber", trimCountryCodeHelper(customerData.ContactNumber));
+    if (customerData.City) formData.append("City", customerData.City.name);
+    if (customerData.Location) formData.append("Location", customerData.Location?.name);
+    if (customerData.Exprience) formData.append("Exprience", customerData.Exprience);
+    if (customerData.Address) formData.append("Adderess", customerData.Address);
+    if (customerData.Email) formData.append("Email", customerData.Email);
+    if (customerData.Skill) formData.append("Skill", customerData.Skill);
+    if (customerData.url) formData.append("url", customerData.url);
+    if (customerData.salaryRange) formData.append("salaryRange", customerData.salaryRange);
+    if (customerData.ReferenceId) formData.append("ReferenceId", customerData.ReferenceId);
+    if (customerData.CustomerId) formData.append("CustomerId", customerData.CustomerId);
+    if (customerData.CustomerDate) formData.append("CustomerDate", customerData.CustomerDate);
+    if (customerData.CustomerYear) formData.append("CustomerYear", customerData.CustomerYear);
+    if (customerData.Other) formData.append("Other", customerData.Other);
+    if (customerData.Description) formData.append("Description", customerData.Description);
+    if (customerData.Video) formData.append("Video", customerData.Video);
+    if (customerData.GoogleMap) formData.append("GoogleMap", customerData.GoogleMap);
+    if (customerData.Verified) formData.append("Verified", customerData.Verified);
 
-      if (customerData.SitePlan && (customerData.SitePlan as any).name) {
-        formData.append("SitePlan", customerData.SitePlan);
-      }
-      //console.log(customerData)
-      const result = await addCustomer(formData);
+    // Append files correctly
+    if (Array.isArray(customerData.CustomerImage)) {
+      customerData.CustomerImage.forEach((file) => formData.append("CustomerImage", file));
+    }
 
-      if (result) {
-        toast.success("Customer added successfully!");
-        router.push("/customer");
-      } else {
-        //toast.error(result??"Failed to add customer");
-      }
-    
+    if (customerData.SitePlan && (customerData.SitePlan as any).name) {
+      formData.append("SitePlan", customerData.SitePlan);
+    }
+    //console.log(customerData)
+    const result = await addCustomer(formData);
+
+    if (result) {
+      toast.success("Customer added successfully!");
+      router.push("/customer");
+    } else {
+      //toast.error(result??"Failed to add customer");
+    }
+
   };
 
   const dropdownOptions = ["Option1", "Option2", "Option3"];
@@ -277,7 +277,7 @@ const handleContactExist = async (contactNo: string) => {
     } else {
       setFieldOptions((prev) => ({ ...prev, Location: [] }));
     }
-  }, [customerData.Campaign.id, customerData.CustomerType.id,customerData.City.id]);
+  }, [customerData.Campaign.id, customerData.CustomerType.id, customerData.City.id]);
 
   const fetchCustomerType = async (campaignId: string) => {
     try {
@@ -291,7 +291,7 @@ const handleContactExist = async (contactNo: string) => {
 
   const fetchLocation = async (cityId: string) => {
     try {
-      
+
       const res = await getLocationByCity(cityId);
       setFieldOptions((prev) => ({ ...prev, Location: res || [] }));
     } catch (error) {
@@ -431,12 +431,12 @@ const handleContactExist = async (contactNo: string) => {
                 }}
                 error={errors.Location}
               />
-              <InputField className=" max-sm:hidden" label="Exprience" name="Exprience" value={customerData.Exprience} onChange={handleInputChange} />
+              <InputField className=" max-sm:hidden" label="Exprience" name="Exprience" value={customerData.Exprience ?? ""} onChange={handleInputChange} />
               <InputField className=" max-sm:hidden" label="Address" name="Address" value={customerData.Address} onChange={handleInputChange} />
               <InputField className=" max-sm:hidden" label="Email" name="Email" value={customerData.Email} onChange={handleInputChange} error={errors.Email} />
               <SingleSelect className=" max-sm:hidden" options={Array.isArray(fieldOptions?.Skill) ? fieldOptions.Skill : []} label="Skill" value={customerData.Skill} onChange={(v) => handleSelectChange("Skill", v)} />
-                 <SingleSelect className=" max-sm:hidden" options={Array.isArray(fieldOptions?.salaryRange) ? fieldOptions.salaryRange : []} label="salary Range" value={customerData.Skill} onChange={(v) => handleSelectChange("salaryRange", v)} />
-                  <InputField className=" max-sm:hidden" label="Url" name="url" value={customerData.url} onChange={handleInputChange} />
+              <SingleSelect className=" max-sm:hidden" options={Array.isArray(fieldOptions?.salaryRange) ? fieldOptions.salaryRange : []} label="salary Range" value={customerData.Skill} onChange={(v) => handleSelectChange("salaryRange", v)} />
+              <InputField className=" max-sm:hidden" label="Url" name="url" value={customerData.url??""} onChange={handleInputChange} />
               <InputField className=" max-sm:hidden" label="Reference ID" name="ReferenceId" value={customerData.ReferenceId} onChange={handleInputChange} />
               <InputField className=" max-sm:hidden" label="Customer ID" name="CustomerId" value={customerData.CustomerId} onChange={handleInputChange} />
               <div className=" max-sm:hidden">

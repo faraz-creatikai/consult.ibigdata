@@ -4,15 +4,16 @@ export interface customerAllDataInterface {
   customerName: string;
   CustomerSubtype: { id: string; name: string };
   ContactNumber: string;
-  City: {id:string; name:string};
-  Location:{id:string; name:string};
-  Exprience: string;
-  Area: string;
+  City: { id: string; name: string };
+  Location: { id: string; name: string };
+  Exprience?: string;
+  Area?: string;
   Address: string;
   Email: string;
-  Skill: string;
-  url : string;
-  salaryRange:string;
+  Facilities?: string;
+  Skill?: string;
+  url?: string;
+  salaryRange?: string;
   ReferenceId: string;
   CustomerId: string;
   CustomerDate: string;
@@ -57,8 +58,8 @@ export interface customerGetDataInterface {
   Type: string;
   SubType: string;
   Name: string;
-  Description?:string;
-  ReferenceId?:string;
+  Description?: string;
+  ReferenceId?: string;
   Email: string;
   City: string;
   Location: string;
@@ -68,16 +69,16 @@ export interface customerGetDataInterface {
   Date: string;
   SitePlan?: string;
   // that add by DJ
-   CustomerType: string;
+  CustomerType: string;
   CustomerSubType: string;
   CustomerName: string;
   Reason: string;
-  Facillities : string;
-  CustomerId : string;
-  Adderess : string;
-  CustomerYear : string;
-  Area : string;
-  Other : string;
+  Facillities: string;
+  CustomerId: string;
+  Adderess: string;
+  CustomerYear: string;
+  Area: string;
+  Other: string;
 }
 
 

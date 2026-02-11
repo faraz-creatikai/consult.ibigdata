@@ -494,7 +494,7 @@ export default function CustomerEdit() {
                 }}
                 error={errors.Location}
               />
-              <InputField className=" max-sm:hidden" label="Area" name="Area" value={customerData.Area} onChange={handleInputChange} />
+              <InputField className=" max-sm:hidden" label="Area" name="Area" value={customerData.Area??""} onChange={handleInputChange} />
               <InputField className=" max-sm:hidden" label="Address" name="Address" value={customerData.Address} onChange={handleInputChange} />
               <InputField className=" max-sm:hidden" label="Email" name="Email" value={customerData.Email} onChange={handleInputChange} error={errors.Email} />
               <SingleSelect className=" max-sm:hidden" options={Array.isArray(fieldOptions?.Facilities) ? fieldOptions.Facilities : []} label="Facilities" value={customerData.Facilities} onChange={(v) => handleSelectChange("Facilities", v)} />
