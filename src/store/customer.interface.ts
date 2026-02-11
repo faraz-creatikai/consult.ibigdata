@@ -7,6 +7,7 @@ export interface customerAllDataInterface {
   City: {id:string; name:string};
   Location:{id:string; name:string};
   Exprience: string;
+  Area: string;
   Address: string;
   Email: string;
   Skill: string;
