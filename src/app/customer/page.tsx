@@ -1359,7 +1359,7 @@ useEffect(() => {
                 </form>
               </div>
             </div>
-            <div className=" overflow-auto relative" ref={scrollRef}>
+            <div className="  relative" ref={scrollRef}>
               <div className=" flex justify-between items-center sticky top-0 left-0 w-full">
                 <div className="flex gap-10 items-center px-3 py-4 min-w-max text-gray-700">
 
@@ -1682,7 +1682,7 @@ useEffect(() => {
                         ))
                       ) : (
                         <tr>
-                          <td colSpan={10} className="text-center py-4 text-gray-500">
+                          <td colSpan={10} className="text-center py-4 w-full text-gray-500">
                             No data available.
                           </td>
                         </tr>
