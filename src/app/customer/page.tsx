@@ -41,7 +41,7 @@ import ObjectSelect from "../component/ObjectSelect";
 import { FaPhone, FaWhatsapp } from "react-icons/fa";
 import { useAuth } from "@/context/AuthContext";
 import { exportToExcel } from "../utils/exportToExcel";
-  import Tablesetting from "@/components/TableSetting";
+import Tablesetting from "@/components/TableSetting";
 
 
 
@@ -115,51 +115,53 @@ export default function Customer() {
   });
   // for header
   type Column = {
-  key: string;
-  label: string;
-  isPinned: boolean;
-  visible: boolean;
-};
+    key: string;
+    label: string;
+    isPinned: boolean;
+    visible: boolean;
+  };
 
-const DEFAULT_COLUMNS: Column[] = [
-{ key: "sno", label: "S.No.", isPinned: true, visible: true },
-  { key: "campaign", label: "Campaign", isPinned: true, visible: true },
-  { key: "type", label: "Customer Type", isPinned: true, visible: true },
-  { key: "subtype", label: "Customer Subtype", isPinned: true, visible: true },
-  { key: "name", label: "Customer Name", isPinned: true, visible: true },
-  { key: "City", label: "City", isPinned: true, visible: true },
-  { key: "Area", label: "Area", isPinned: true, visible: true },
-   { key: "Email", label: "Email", isPinned: true, visible: true },
-   { key: "Skill", label: "Skill", isPinned: true, visible: true },
- { key: "Facillities", label: "Facillities", isPinned: true, visible: true },
- { key: "CustomerId", label: "customer Id", isPinned: true, visible: true },
-  { key: "date", label: "Date", isPinned: true, visible: true },
-  { key: "CustomerYear", label: "customer year", isPinned: true, visible: true },
-  { key: "Other", label: "Other", isPinned: true, visible: true },
-  { key: "description", label: "Description", isPinned: true, visible: true },
-  { key: "location", label: "Location", isPinned: true, visible: true },
-  { key: "contact", label: "Contact No", isPinned: true, visible: true },
-  { key: "assign", label: "Assign To", isPinned: true, visible: true },
-  { key: "reference", label: "ReferenceId", isPinned: true, visible: true },
-  { key: "Adderess", label: "Adderess", isPinned: true, visible: true },
-  { key: "actions", label: "Actions", isPinned: true, visible: true },
-];
-console.log("this is my default columns", DEFAULT_COLUMNS);
-const [columns, setColumns] = useState<Column[]>(()=>{
+  const DEFAULT_COLUMNS: Column[] = [
+    { key: "sno", label: "S.No.", isPinned: true, visible: true },
+    { key: "campaign", label: "Campaign", isPinned: true, visible: true },
+    { key: "type", label: "Customer Type", isPinned: true, visible: true },
+    { key: "subtype", label: "Customer Subtype", isPinned: true, visible: true },
+    { key: "name", label: "Customer Name", isPinned: true, visible: true },
+    { key: "City", label: "City", isPinned: true, visible: true },
+    { key: "Area", label: "Area", isPinned: true, visible: true },
+    { key: "Email", label: "Email", isPinned: true, visible: true },
+    { key: "Experience", label: "Experience", isPinned: true, visible: true },
+    { key: "Skill", label: "Skill", isPinned: true, visible: true },
+    { key: "SalaryRange", label: "SalaryRange", isPinned: true, visible: true },
+    { key: "Facillities", label: "Facillities", isPinned: true, visible: true },
+    { key: "CustomerId", label: "customer Id", isPinned: true, visible: true },
+    { key: "date", label: "Date", isPinned: true, visible: true },
+    { key: "CustomerYear", label: "customer year", isPinned: true, visible: true },
+    { key: "Other", label: "Other", isPinned: true, visible: true },
+    { key: "description", label: "Description", isPinned: true, visible: true },
+    { key: "location", label: "Location", isPinned: true, visible: true },
+    { key: "contact", label: "Contact No", isPinned: true, visible: true },
+    { key: "assign", label: "Assign To", isPinned: true, visible: true },
+    { key: "reference", label: "ReferenceId", isPinned: true, visible: true },
+    { key: "Adderess", label: "Adderess", isPinned: true, visible: true },
+    { key: "actions", label: "Actions", isPinned: true, visible: true },
+  ];
+  console.log("this is my default columns", DEFAULT_COLUMNS);
+  const [columns, setColumns] = useState<Column[]>(() => {
     if (typeof window === "undefined") return DEFAULT_COLUMNS;
 
-  const saved = localStorage.getItem("table-columns");
-  if(!saved) return DEFAULT_COLUMNS;
+    const saved = localStorage.getItem("table-columns");
+    if (!saved) return DEFAULT_COLUMNS;
 
-  const savedColumns : Column[] = JSON.parse(saved);
-  const MergedColumns = DEFAULT_COLUMNS.map((defaultcol)=>{
-const savedcol = savedColumns.find(col => col.key === defaultcol.key);
-return savedcol ? {...defaultcol , ...savedcol} : defaultcol
+    const savedColumns: Column[] = JSON.parse(saved);
+    const MergedColumns = DEFAULT_COLUMNS.map((defaultcol) => {
+      const savedcol = savedColumns.find(col => col.key === defaultcol.key);
+      return savedcol ? { ...defaultcol, ...savedcol } : defaultcol
+    });
+    return MergedColumns;
   });
-  return MergedColumns;
-});
 
-const [newHeader, setNewHeader] = useState("");
+  const [newHeader, setNewHeader] = useState("");
 
 
   const [customerData, setCustomerData] = useState<customerGetDataInterface[]>([]);
@@ -167,16 +169,16 @@ const [newHeader, setNewHeader] = useState("");
   const [exportingCustomerData, setExportingCustomerData] = useState<customerGetDataInterface[]>([]);
 
 
-const addHeader = () => {
-  if (!newHeader.trim()) return;
+  const addHeader = () => {
+    if (!newHeader.trim()) return;
 
-  setColumns((prev:any) => [...prev, newHeader.trim()]);
-  setNewHeader("");
-};
-// header effect
-useEffect(() => {
-  localStorage.setItem("table-columns", JSON.stringify(columns));
-}, [columns]);
+    setColumns((prev: any) => [...prev, newHeader.trim()]);
+    setNewHeader("");
+  };
+  // header effect
+  useEffect(() => {
+    localStorage.setItem("table-columns", JSON.stringify(columns));
+  }, [columns]);
 
   useEffect(() => {
     const status = searchParams.get("Campaign");
@@ -277,7 +279,9 @@ useEffect(() => {
       Name: item.customerName,
       Description: item.Description,
       Email: item.Email,
-      Adderess:item.Adderess,
+      Experience: item.Experience,
+      SalaryRange: item.SalaryRange,
+      Adderess: item.Adderess,
       Skill: item.Skill,
       City: item.City,
       Location: item.Location,
@@ -1418,173 +1422,179 @@ useEffect(() => {
                 {selectedCustomers.length > 0 && <p className=" text-gray-400 font-extralight text-sm">selected {selectedCustomers.length}</p>}
               </div>
               <div className=" border-red-500">
-              <Tablesetting columns={columns} setColumns={setColumns}/>
-              <div className=" max-h-[600px] overflow-y-auto">
-                <table className="table-auto relative w-full border-separate border-spacing-0 text-sm border border-gray-200">
-                  <thead className="bg-[var(--color-primary)] h-16 text-white sticky top-0 left-0 z-[5]">
-                    <tr>
-
-                      {/* ✅ SELECT ALL CHECKBOX COLUMN */}
-                      <th className="px-2 py-3 border border-[var(--color-secondary-dark)] bg-[var(--color-primary)] sticky left-0 z-20 text-left">
-
-                        <input
-                          id="selectall"
-                          type="checkbox"
-                          className="hidden"
-                          checked={
-                            currentRows.length > 0 &&
-                            currentRows.every((r) => selectedCustomers.includes(r._id))
-                          }
-                          onChange={handleSelectAll}
-                        />
-                      </th>
-                        
-                         {columns
-           .filter(col => col.visible)
-          .map((header, index) => (
-            <th
-              key={header.key}
-              className={`px-2 py-3 border border-[var(--color-secondary-dark)] text-left  
-                ${header.key === "sno" ? "sticky left-7.5 z-20 bg-[var(--color-primary)]" : ""}`}
-            >
-              {header.label}
-            </th>
-          ))}
-                    
-                    </tr>
-                  </thead>
-
-                  <tbody>
-                    {customerTableLoader ?
+                <Tablesetting columns={columns} setColumns={setColumns} />
+                <div className=" max-h-[600px] overflow-y-auto">
+                  <table className="table-auto relative w-full border-separate border-spacing-0 text-sm border border-gray-200">
+                    <thead className="bg-[var(--color-primary)] h-16 text-white sticky top-0 left-0 z-[5]">
                       <tr>
-                        <td colSpan={12} className="text-center py-4 text-gray-500">
-                          Loading customers...
-                        </td>
-                      </tr> : currentRows.length > 0 ? (
-                        currentRows.map((item, index) => (
-                          <tr key={item._id} className="border-t hover:bg-[#f7f6f3] transition-all duration-200">
 
-                            {/* ✅ ROW CHECKBOX */}
-                            <td className="px-2 py-3 sticky left-0 bg-white  border border-gray-200">
-                              <input
-                                type="checkbox"
-                                checked={selectedCustomers.includes(item._id)}
-                                onChange={() => handleSelectRow(item._id)}
-                              />
-                            </td>
-                          
-        {columns.filter(col => col.visible).map((col) => {
-          let cellValue;
+                        {/* ✅ SELECT ALL CHECKBOX COLUMN */}
+                        <th className="px-2 py-3 border border-[var(--color-secondary-dark)] bg-[var(--color-primary)] sticky left-0 z-20 text-left">
 
-          switch (col.key) {
-            case "sno":
-              cellValue = (currentTablePage - 1) * rowsPerTablePage + (index + 1);
-              break;
-            case "campaign":
-              cellValue = item.Campaign;
-              break;
-            case "type":
-              cellValue = item.Type;
-              break;
-            case "subtype":
-              cellValue = item.SubType;
-              break;
-             case "City":
-         
-              cellValue = item.City;
-              break;
-               case "Area":
-              cellValue = item.Area;
-              break;
-               case "Email":
-              cellValue = item.Email;
-              break;
-                case "Facillities":
-              cellValue = item.Facillities;
-              break;
-              case "Skill":
-              cellValue = item.Skill;
-              break;
-                case "CustomerId":
-              cellValue = item.CustomerId;
-              break;
-              case "Adderess":
-              cellValue = item.Adderess;
-              break;
-               case "CustomerYear":
-              cellValue = item.CustomerYear;
-              break; case "Other":
-              cellValue = item.Other;
-              break;
-            case "name":
-              cellValue = item.Name;
-              break;
-            case "description":
-              cellValue = item.Description;
-              break;
-            case "location":
-               console.log("hi ",item.City)
-              cellValue = item.Location;
-              break;
-            case "contact":
-              cellValue = (
-                <>
-                  {item.ContactNumber && (
-                    <>
-                      <div>{item.ContactNumber}</div>
-                      <span className="flex">
-                        <Button
-                          component="a"
-                          href={`tel:${item.ContactNumber}`}
-                          sx={{
-                            backgroundColor: "#E8F5E9",
-                            color: "var(--color-primary)",
-                            minWidth: "14px",
-                            height: "24px",
-                            borderRadius: "8px",
-                            margin: "4px"
-                          }}
-                        >
-                          <FaPhone size={12} />
-                        </Button>
-                        <Button
-                          sx={{
-                            backgroundColor: "#E8F5E9",
-                            color: "var(--color-primary)",
-                            minWidth: "14px",
-                            height: "24px",
-                            borderRadius: "8px",
-                            margin: "4px"
-                          }}
-                          onClick={() => {
-                            setSelectedCustomers([item._id]);
-                            setSelectUser(item._id);
-                            setIsMailAllOpen(true);
-                            fetchEmailTemplates();
-                          }}
-                        >
-                          <MdEmail size={14} />
-                        </Button>
-                        <Button
-                          onClick={() => {
-                            setSelectedCustomers([item._id]);
-                            setSelectUser(item._id);
-                            setIsWhatsappAllOpen(true);
-                            fetchWhatsappTemplates();
-                          }}
-                          sx={{
-                            backgroundColor: "#E8F5E9",
-                            color: "var(--color-primary)",
-                            minWidth: "14px",
-                            height: "24px",
-                            borderRadius: "8px",
-                            margin: "4px"
-                          }}
-                        >
-                          <FaWhatsapp size={14} />
-                        </Button>
-                      </span>
-                      {/* {duplicateNumbersSet.has(item.ContactNumber) && (
+                          <input
+                            id="selectall"
+                            type="checkbox"
+                            className="hidden"
+                            checked={
+                              currentRows.length > 0 &&
+                              currentRows.every((r) => selectedCustomers.includes(r._id))
+                            }
+                            onChange={handleSelectAll}
+                          />
+                        </th>
+
+                        {columns
+                          .filter(col => col.visible)
+                          .map((header, index) => (
+                            <th
+                              key={header.key}
+                              className={`px-2 py-3 border border-[var(--color-secondary-dark)] text-left  
+                ${header.key === "sno" ? "sticky left-7.5 z-20 bg-[var(--color-primary)]" : ""}`}
+                            >
+                              {header.label}
+                            </th>
+                          ))}
+
+                      </tr>
+                    </thead>
+
+                    <tbody>
+                      {customerTableLoader ?
+                        <tr>
+                          <td colSpan={12} className="text-center py-4 text-gray-500">
+                            Loading customers...
+                          </td>
+                        </tr> : currentRows.length > 0 ? (
+                          currentRows.map((item, index) => (
+                            <tr key={item._id} className="border-t hover:bg-[#f7f6f3] transition-all duration-200">
+
+                              {/* ✅ ROW CHECKBOX */}
+                              <td className="px-2 py-3 sticky left-0 bg-white  border border-gray-200">
+                                <input
+                                  type="checkbox"
+                                  checked={selectedCustomers.includes(item._id)}
+                                  onChange={() => handleSelectRow(item._id)}
+                                />
+                              </td>
+
+                              {columns.filter(col => col.visible).map((col) => {
+                                let cellValue;
+
+                                switch (col.key) {
+                                  case "sno":
+                                    cellValue = (currentTablePage - 1) * rowsPerTablePage + (index + 1);
+                                    break;
+                                  case "campaign":
+                                    cellValue = item.Campaign;
+                                    break;
+                                  case "type":
+                                    cellValue = item.Type;
+                                    break;
+                                  case "subtype":
+                                    cellValue = item.SubType;
+                                    break;
+                                  case "City":
+
+                                    cellValue = item.City;
+                                    break;
+                                  case "Area":
+                                    cellValue = item.Area;
+                                    break;
+                                  case "Email":
+                                    cellValue = item.Email;
+                                    break;
+                                  case "Experience":
+                                    cellValue = item.Experience;
+                                    break;
+                                  case "SalaryRange":
+                                    cellValue = item.SalaryRange;
+                                    break;
+                                  case "Facillities":
+                                    cellValue = item.Facillities;
+                                    break;
+                                  case "Skill":
+                                    cellValue = item.Skill;
+                                    break;
+                                  case "CustomerId":
+                                    cellValue = item.CustomerId;
+                                    break;
+                                  case "Adderess":
+                                    cellValue = item.Adderess;
+                                    break;
+                                  case "CustomerYear":
+                                    cellValue = item.CustomerYear;
+                                    break; case "Other":
+                                    cellValue = item.Other;
+                                    break;
+                                  case "name":
+                                    cellValue = item.Name;
+                                    break;
+                                  case "description":
+                                    cellValue = item.Description;
+                                    break;
+                                  case "location":
+                                    console.log("hi ", item.City)
+                                    cellValue = item.Location;
+                                    break;
+                                  case "contact":
+                                    cellValue = (
+                                      <>
+                                        {item.ContactNumber && (
+                                          <>
+                                            <div>{item.ContactNumber}</div>
+                                            <span className="flex">
+                                              <Button
+                                                component="a"
+                                                href={`tel:${item.ContactNumber}`}
+                                                sx={{
+                                                  backgroundColor: "#E8F5E9",
+                                                  color: "var(--color-primary)",
+                                                  minWidth: "14px",
+                                                  height: "24px",
+                                                  borderRadius: "8px",
+                                                  margin: "4px"
+                                                }}
+                                              >
+                                                <FaPhone size={12} />
+                                              </Button>
+                                              <Button
+                                                sx={{
+                                                  backgroundColor: "#E8F5E9",
+                                                  color: "var(--color-primary)",
+                                                  minWidth: "14px",
+                                                  height: "24px",
+                                                  borderRadius: "8px",
+                                                  margin: "4px"
+                                                }}
+                                                onClick={() => {
+                                                  setSelectedCustomers([item._id]);
+                                                  setSelectUser(item._id);
+                                                  setIsMailAllOpen(true);
+                                                  fetchEmailTemplates();
+                                                }}
+                                              >
+                                                <MdEmail size={14} />
+                                              </Button>
+                                              <Button
+                                                onClick={() => {
+                                                  setSelectedCustomers([item._id]);
+                                                  setSelectUser(item._id);
+                                                  setIsWhatsappAllOpen(true);
+                                                  fetchWhatsappTemplates();
+                                                }}
+                                                sx={{
+                                                  backgroundColor: "#E8F5E9",
+                                                  color: "var(--color-primary)",
+                                                  minWidth: "14px",
+                                                  height: "24px",
+                                                  borderRadius: "8px",
+                                                  margin: "4px"
+                                                }}
+                                              >
+                                                <FaWhatsapp size={14} />
+                                              </Button>
+                                            </span>
+                                            {/* {duplicateNumbersSet.has(item.ContactNumber) && (
                         <span>
                           <Button
                             onClick={() => {
@@ -1604,58 +1614,58 @@ useEffect(() => {
                           </Button>
                         </span>
                       )} */}
-                    </>
-                  )}
-                </>
-              );
-              break;
-            case "assign":
-              cellValue = item.AssignTo;
-              break;
-            case "reference":
-              cellValue = item.ReferenceId;
-              break;
-            case "date":
-              cellValue = item.Date;
-              break;
-            case "actions":
-              cellValue = (
-                <div className="grid grid-cols-2 gap-3 items-center h-full">
-                  <Button
-                    sx={{ backgroundColor: "#E8F5E9", color: "var(--color-primary)", minWidth: "32px", height: "32px", borderRadius: "8px" }}
-                    onClick={() => router.push(`/followups/customer/add/${item._id}`)}
-                  >
-                    <MdAdd />
-                  </Button>
-                  <Button
-                    sx={{ backgroundColor: "#E8F5E9", color: "var(--color-primary)", minWidth: "32px", height: "32px", borderRadius: "8px" }}
-                    onClick={() => router.push(`/customer/edit/${item._id}`)}
-                  >
-                    <MdEdit />
-                  </Button>
-                  <Button
-                    sx={{ backgroundColor: "#FDECEA", color: "#C62828", minWidth: "32px", height: "32px", borderRadius: "8px" }}
-                    onClick={() => {
-                      setIsDeleteDialogOpen(true);
-                      setDialogType("delete");
-                      setDialogData({
-                        id: item._id,
-                        customerName: item.Name,
-                        ContactNumber: item.ContactNumber,
-                      });
-                    }}
-                  >
-                    <MdDelete />
-                  </Button>
-                  <Button
-                    sx={{ backgroundColor: "#FFF0F5", color: item.isFavourite ? "#E91E63" : "#C62828", minWidth: "32px", height: "32px", borderRadius: "8px" }}
-                    onClick={() =>
-                      handleFavouriteToggle(item._id, item.Name, item.ContactNumber, item.isFavourite ?? false)
-                    }
-                  >
-                    {item.isFavourite ? <MdFavorite /> : <MdFavoriteBorder />}
-                  </Button>
-                  {/* <Button
+                                          </>
+                                        )}
+                                      </>
+                                    );
+                                    break;
+                                  case "assign":
+                                    cellValue = item.AssignTo;
+                                    break;
+                                  case "reference":
+                                    cellValue = item.ReferenceId;
+                                    break;
+                                  case "date":
+                                    cellValue = item.Date;
+                                    break;
+                                  case "actions":
+                                    cellValue = (
+                                      <div className="grid grid-cols-2 gap-3 items-center h-full">
+                                        <Button
+                                          sx={{ backgroundColor: "#E8F5E9", color: "var(--color-primary)", minWidth: "32px", height: "32px", borderRadius: "8px" }}
+                                          onClick={() => router.push(`/followups/customer/add/${item._id}`)}
+                                        >
+                                          <MdAdd />
+                                        </Button>
+                                        <Button
+                                          sx={{ backgroundColor: "#E8F5E9", color: "var(--color-primary)", minWidth: "32px", height: "32px", borderRadius: "8px" }}
+                                          onClick={() => router.push(`/customer/edit/${item._id}`)}
+                                        >
+                                          <MdEdit />
+                                        </Button>
+                                        <Button
+                                          sx={{ backgroundColor: "#FDECEA", color: "#C62828", minWidth: "32px", height: "32px", borderRadius: "8px" }}
+                                          onClick={() => {
+                                            setIsDeleteDialogOpen(true);
+                                            setDialogType("delete");
+                                            setDialogData({
+                                              id: item._id,
+                                              customerName: item.Name,
+                                              ContactNumber: item.ContactNumber,
+                                            });
+                                          }}
+                                        >
+                                          <MdDelete />
+                                        </Button>
+                                        <Button
+                                          sx={{ backgroundColor: "#FFF0F5", color: item.isFavourite ? "#E91E63" : "#C62828", minWidth: "32px", height: "32px", borderRadius: "8px" }}
+                                          onClick={() =>
+                                            handleFavouriteToggle(item._id, item.Name, item.ContactNumber, item.isFavourite ?? false)
+                                          }
+                                        >
+                                          {item.isFavourite ? <MdFavorite /> : <MdFavoriteBorder />}
+                                        </Button>
+                                        {/* <Button
                     className=" bg-gray-500"
                     sx={{ backgroundColor: item.isChecked ? "#E8F5E9" : "#FFF0F5", color: item.isChecked ? "var(--color-primary)" : "#E91E63", minWidth: "32px", height: "32px", borderRadius: "8px" }}
                     onClick={() =>
@@ -1664,15 +1674,16 @@ useEffect(() => {
                   >
                     {item.isChecked ? <IoCheckmarkDoneOutline size={20} /> : <IoCheckmark size={20} />}
                   </Button> */}
-                </div>
-              );
-              break;
-            default:
-              cellValue = null;
-          }
+                                      </div>
+                                    );
+                                    break;
+                                  default:
+                                    cellValue = null;
+                                }
 
-          return (
-            <td key={col.key} className={`px-2 py-3 border border-gray-200 break-all whitespace-normal 
+                                return (
+                                  <td key={col.key} className={`px-2 py-3 border border-gray-200 break-all whitespace-normal 
+                                    ${col.key !== "sno" ? "min-w-[100px]" : ""}
             ${col.key === "description" && item.Description ? "min-w-[160px]" : ""} 
             ${col.key === "sno" ? "sticky left-7.5  bg-white max-w-[60px]" : ""}
              ${col.key === "type" ? "max-w-[80px]" : ""}
@@ -1682,22 +1693,22 @@ useEffect(() => {
               ${col.key === "date" ? "min-w-[100px]" : ""} 
              ${col.key === "actions" ? "min-w-[90px] align-middle" : ""}
              `}>
-              {cellValue}
-            </td>
-          );
-        })}
+                                    {cellValue}
+                                  </td>
+                                );
+                              })}
+                            </tr>
+                          ))
+                        ) : (
+                          <tr>
+                            <td colSpan={10} className="text-center py-4 w-full text-gray-500">
+                              No data available.
+                            </td>
                           </tr>
-                        ))
-                      ) : (
-                        <tr>
-                          <td colSpan={10} className="text-center py-4 w-full text-gray-500">
-                            No data available.
-                          </td>
-                        </tr>
-                      )}
-                  </tbody>
-                </table>
-              </div></div>
+                        )}
+                    </tbody>
+                  </table>
+                </div></div>
             </div>
             {/* Pagination */}
             <div className="flex justify-between items-center mt-3 py-3 px-5">

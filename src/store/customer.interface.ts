@@ -61,6 +61,8 @@ export interface customerGetDataInterface {
   Description?: string;
   ReferenceId?: string;
   Email: string;
+  SalaryRange?: string;
+  Experience?: string;
   City: string;
   Location: string;
   isFavourite?: boolean;
