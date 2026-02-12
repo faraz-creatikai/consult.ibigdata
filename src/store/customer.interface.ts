@@ -73,6 +73,7 @@ export interface customerGetDataInterface {
   CustomerSubType: string;
   CustomerName: string;
   Reason: string;
+  Skill? : string;
   Facillities: string;
   CustomerId: string;
   Adderess: string;

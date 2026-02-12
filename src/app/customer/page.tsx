@@ -127,9 +127,10 @@ const DEFAULT_COLUMNS: Column[] = [
   { key: "type", label: "Customer Type", isPinned: true, visible: true },
   { key: "subtype", label: "Customer Subtype", isPinned: true, visible: true },
   { key: "name", label: "Customer Name", isPinned: true, visible: true },
-  { key: "city", label: "City", isPinned: true, visible: true },
+  { key: "City", label: "City", isPinned: true, visible: true },
   { key: "Area", label: "Area", isPinned: true, visible: true },
    { key: "Email", label: "Email", isPinned: true, visible: true },
+   { key: "Skill", label: "Skill", isPinned: true, visible: true },
  { key: "Facillities", label: "Facillities", isPinned: true, visible: true },
  { key: "CustomerId", label: "customer Id", isPinned: true, visible: true },
   { key: "date", label: "Date", isPinned: true, visible: true },
@@ -276,6 +277,8 @@ useEffect(() => {
       Name: item.customerName,
       Description: item.Description,
       Email: item.Email,
+      Adderess:item.Adderess,
+      Skill: item.Skill,
       City: item.City,
       Location: item.Location,
       ContactNumber: item.ContactNumber?.slice(0, 10),
@@ -1487,6 +1490,7 @@ useEffect(() => {
               cellValue = item.SubType;
               break;
              case "City":
+         
               cellValue = item.City;
               break;
                case "Area":
@@ -1497,6 +1501,9 @@ useEffect(() => {
               break;
                 case "Facillities":
               cellValue = item.Facillities;
+              break;
+              case "Skill":
+              cellValue = item.Skill;
               break;
                 case "CustomerId":
               cellValue = item.CustomerId;
@@ -1516,6 +1523,7 @@ useEffect(() => {
               cellValue = item.Description;
               break;
             case "location":
+               console.log("hi ",item.City)
               cellValue = item.Location;
               break;
             case "contact":
