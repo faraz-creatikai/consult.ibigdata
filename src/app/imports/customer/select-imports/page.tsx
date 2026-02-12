@@ -73,6 +73,33 @@ const [pendingValidData, setPendingValidData] = useState<any[]>([]);
         }
     }, [excelHeaders]);
 
+    const normalizeHeader = (value: string) => {
+    return value
+        ?.toLowerCase()
+        .replace(/\s+/g, "")       // remove spaces
+        .replace(/[^a-z0-9]/g, ""); // remove special characters
+};
+
+useEffect(() => {
+    if (!excelHeaders?.length) return;
+
+    const autoMapped: Record<string, string> = {};
+
+    excelHeaders.forEach((excelHeader) => {
+        const normalizedExcel = normalizeHeader(excelHeader);
+
+        const matchedField = mappingFields.find((field) => {
+            return normalizeHeader(field) === normalizedExcel;
+        });
+
+        if (matchedField) {
+            autoMapped[excelHeader] = matchedField;
+        }
+    });
+
+    setFieldMapping(autoMapped);
+}, [excelHeaders]);
+
 
     // 🟩 Handle Input
     const handleInputChange = useCallback(
