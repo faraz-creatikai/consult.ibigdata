@@ -84,37 +84,49 @@
   --sidebar-border: hsl(220 13% 91%);
   --sidebar-ring: hsl(217.2 91.2% 59.8%);
 
-/* custom colors – BLUE × INDIGO theme */
 
-/* primary (teal based on #0c5257) */
---color-primary: #0c5257;          /* main teal */
---color-primary-dark: #094347;     /* darker teal */
---color-primary-darker: #07363a;   /* deep teal */
---color-primary-light: #CFEDEE;    /* soft teal background */
---color-primary-lighter: #E6F6F7;  /* extra light teal */
+  /*custom colors */
+--color-primary: #4318C4;
+--color-primary-dark: #3A14A8;
+--color-primary-darker: #2F108A;
+--color-primary-light: #EDE9FE;
+--color-primary-lighter: #F5F3FF;
 
-/* secondary (slightly brighter teal tone) */
---color-secondary: #147A80;        /* teal accent */
---color-secondary-dark: #106469;   /* darker accent */
---color-secondary-darker: #0b4f52; /* deep accent */
---color-secondary-light: #D7F2F3;  /* light teal */
+--color-secondary: #6D28D9;
+--color-secondary-dark: #5B21B6;
+--color-secondary-darker:  #0B0620;
+--color-secondary-light: #C4B5FD;
 
-/* accents */
---color-accent: #5FBFC4;           /* soft teal accent */
---color-muted: #E0F4F5;            /* muted teal background */
---color-destructive: #EF4444;      /* red for danger (keep as-is) */
+--color-accent: #A78BFA;
+--color-muted: #DDD6FE;
+--color-destructive: #F87171;
 
-/* additional colors */
---color-gray: #5F6B6C;             /* slightly cool gray */
+/* Additional colors */
+--color-gray: #6b7280;
 --color-textlightdark: #ffffff;
---color-bglightdark: #021314;      /* very dark teal background */
+--color-bglightdark: #000000;
 
 /* table phone screen color */
---table: #1E8A90;                  /* brighter teal for table */
+--table: #7C3AED;
+
+/* dark/light */
+
+--color-bgdark: #0F0A2A;
+--color-bglight: white;
+
+--color-childbglight: #EDE9FE;
+--color-childbgdark: #140F3C;
+
+--color-txtdark: black;
+--color-txtlight: white;
+
+--color-bghoverlight: #DDD6FE;
+--color-bghoverdark: #2F108A;
 
 
 
-  
+  /* app font */
+  --app-font:;
   
 }
 
@@ -165,14 +177,20 @@
   }
 }
 
+
+
 /* Tailwind 4 - Remove autofill highlight properly for all themes */
+/* Fix Chrome autofill in dark mode */
 input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
 textarea:-webkit-autofill,
 select:-webkit-autofill {
-  -webkit-box-shadow: 0 0 0px 1000px var(--color-input) inset !important; /* use theme variable */
-  -webkit-text-fill-color: var(--foreground) !important; /* use theme variable */
-  transition: background-color 5000s ease-in-out 0s;
+  -webkit-text-fill-color: #1f2937 !important; /* your normal text color */
+  transition: background-color 9999s ease-in-out 0s;
+  box-shadow: 0 0 0px 1000px transparent inset !important;
 }
+
 
 /* app font */
 /* body {
@@ -187,6 +205,25 @@ select:-webkit-autofill {
 .hide-scrollbar::-webkit-scrollbar {
   display: none; /* Chrome, Safari */
 }
+
+/* Apply only to elements with class "custom-scrollbar" */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent; /* track */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, #06b6d4, #3b82f6); /* cyan → blue */
+  border-radius: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to bottom, #0ea5e9, #2563eb); /* hover */
+}
+
 
 
 

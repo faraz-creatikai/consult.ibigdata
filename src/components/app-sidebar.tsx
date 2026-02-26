@@ -16,6 +16,7 @@ import {
   LineChart,
   LucideCoins,
   ShieldUser,
+  Settings,
 } from "lucide-react";
 
 import { NavMain } from "../components/nav-main";
@@ -89,6 +90,10 @@ const data = {
       icon: Diamond,
       items: [
         {
+          title: "Customer Fields",
+          url: "/masters/customerfields",
+        },
+        {
           title: "Campaign",
           url: "/masters/campaign",
         },
@@ -109,8 +114,12 @@ const data = {
           url: "/masters/locations",
         },
         {
-          title: "Skill",
-          url: "/masters/skill",
+          title: "Sub Locations",
+          url: "/masters/sublocation",
+        },
+        {
+          title: "Facilities",
+          url: "/masters/facilities",
         },
         {
           title: "Amenities",
@@ -139,6 +148,10 @@ const data = {
         {
           title: "References",
           url: "/masters/references",
+        },
+        {
+          title: "Price",
+          url: "/masters/price",
         },
         {
           title: "Expenses",
@@ -227,6 +240,16 @@ const data = {
       ],
     },
     {
+      title: "Settings",
+      url: "#",
+      icon: Settings,
+      items: [
+        {
+          title: "Customer Fields",
+          url: "/settings/customer/customer-fields",
+        },]
+    },
+    {
       title: "Users",
       url: "/users",
       icon: User2,
@@ -270,10 +293,29 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       return false;
     }
     return true;
+  }).map((item) => {
+    // Handle Settings submenu permissions
+    if (item.title === "Settings") {
+      return {
+        ...item,
+        items: item.items?.filter((subItem) => {
+          // Hide "Customer Fields" if not admin
+          if (
+            subItem.title === "Customer Fields" &&
+            admin?.role !== "administrator"
+          ) {
+            return false;
+          }
+          return true;
+        }),
+      };
+    }
+
+    return item;
   });
   return (
     <Sidebar collapsible="icon" className="" {...props}>
-      <SidebarHeader className={`flex items-center py-1 justify-center ${state === "collapsed" ? "bg-white py-4" : "bg-gray-100"}`}>
+      <SidebarHeader className={`flex items-center py-1 justify-center ${state === "collapsed" ? "bg-white dark:bg-[var(--color-secondary-darker)] py-4" : "bg-gray-100"}`}>
         {/* <img src="/logo.webp" alt="App Logo" className="h-10 w-40 " /> */}
         {state === "collapsed" ? (
           <ShieldUser className="w-6 h-6" />

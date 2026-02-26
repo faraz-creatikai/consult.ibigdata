@@ -86,23 +86,23 @@ export default function CustomerImport() {
   };
 
   // Handle select changes
-  // const handleSelectChange = useCallback(
-  //   (label: string, value: string) => {
-  //     setImportData((prev) => ({ ...prev, [label]: value }));
-  //     setErrors((prev) => ({ ...prev, [label]: "" }));
-  //   },
-  //   []
-  // );
+  const handleSelectChange = useCallback(
+    (label: string, value: string) => {
+      setImportData((prev) => ({ ...prev, [label]: value }));
+      setErrors((prev) => ({ ...prev, [label]: "" }));
+    },
+    []
+  );
 
   // Handle input change
-  // const handleInputChange = useCallback(
-  //   (e: React.ChangeEvent<HTMLInputElement>) => {
-  //     const { name, value } = e.target;
-  //     setImportData((prev) => ({ ...prev, [name]: value }));
-  //     setErrors((prev) => ({ ...prev, [name]: "" }));
-  //   },
-  //   []
-  // );
+  const handleInputChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const { name, value } = e.target;
+      setImportData((prev) => ({ ...prev, [name]: value }));
+      setErrors((prev) => ({ ...prev, [name]: "" }));
+    },
+    []
+  );
 
   // 🔹 Handle file upload
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {

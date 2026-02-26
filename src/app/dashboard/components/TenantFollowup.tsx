@@ -36,8 +36,8 @@ const TenantFollowups = () => {
     const [unInterestedData, setUnInterestedData] = React.useState<FollowupStatusMetric | null>(null);
 
     const getColorByPercentage = (percentage: number, defaultColor: string) => {
-    return percentage < 10 ? "#ef4444" : defaultColor;
-};
+        return percentage < 10 ? "#ef4444" : defaultColor;
+    };
 
 
 
@@ -47,7 +47,7 @@ const TenantFollowups = () => {
     const fetchCustomerFollowupData = async () => {
         // fetch customer with followups
         const FollowupResponseRaw = await getAllContactFollowups();
-        console.log(" followups data is here ",FollowupResponseRaw)
+        console.log(" followups data is here ", FollowupResponseRaw)
         const FollowupResponse = FollowupResponseRaw?.map((item: any) => ({
             ContactId: item.ContactId,
             StatusType: item.StatusType,
@@ -85,7 +85,7 @@ const TenantFollowups = () => {
 
 
         //percentage calculation of followups/totalcustomer
-        const percentage = totalContacts? (FollowupsContacts! / totalContacts) * 100 : 0;
+        const percentage = totalContacts ? (FollowupsContacts! / totalContacts) * 100 : 0;
         const interestedPercentage =
             totalFollowups! > 0 ? (interestedFollowups! / totalFollowups!) * 100 : 0;
         const unInterestedPercentage =
@@ -117,7 +117,7 @@ const TenantFollowups = () => {
             statusSecondary: " Followups",
             color: getColorByPercentage(Math.round(unInterestedPercentage), "#0EA5E9")
         });
-         setWantDemoData({
+        setWantDemoData({
             percentage: Math.round(wantDemoPercentage),
             value: wantDemoFollowups ?? 0,
             total: totalFollowups ?? 0,

@@ -15,7 +15,7 @@ import { getCity } from "@/store/masters/city/city";
 import { getLocation } from "@/store/masters/location/location";
 import { handleFieldOptions } from "@/app/utils/handleFieldOptions";
 import { getSubtype, getSubtypeByCampaignAndType } from "@/store/masters/subtype/subtype";
-import { getSkill } from "@/store/masters/skill/skill";
+import { getFacilities } from "@/store/masters/facilities/facilities";
 import BackButton from "@/app/component/buttons/BackButton";
 import SaveButton from "@/app/component/buttons/SaveButton";
 import { handleFieldOptionsObject } from "@/app/utils/handleFieldOptionsObject";
@@ -23,49 +23,31 @@ import ObjectSelect from "@/app/component/ObjectSelect";
 import CustomerSubtypeAdd from "@/app/masters/customer-subtype/add/page";
 import { useCustomerImport } from "@/context/CustomerImportContext";
 import LoaderCircle from "@/app/component/LoaderCircle";
-import InvalidimportData from "@/app/component/popups/invalidImportData";
-import {  CustomerAdvInterface, customerAssignInterface, customerGetDataInterface, DeleteDialogDataInterface } from "@/store/customer.interface";
+import { getCustomerFields } from "@/store/masters/customerfields/customerfields";
 
-interface ErrorInterface {
-    [key: string]: string;
-}
+
+type CategorizedHeader = {
+    header: string;
+    type: "system" | "custom";
+    mappedTo: string;
+};
 
 export default function SelectImports() {
-    const [customerData, setCustomerData] = useState<customerImportDataInterface>({
-        Campaign: { id: "", name: "" },
-        CustomerType: { id: "", name: "" },
-        customerName: "",
-        CustomerSubtype: { id: "", name: "" },
-        ContactNumber: "",
-        City: "",
-        Location: "",
-        Experience: "",
-        Adderess: "",
-        Email: "",
-        Skill: "",
-        ReferenceId: "",
-        CustomerId: "",
-        CustomerDate: "",
-        CustomerYear: "",
-        Other: "",
-        Description: "",
-        Video: "",
-        GoogleMap: "",
-        Verified: "",
-    });
-    const [fieldOptions, setFieldOptions] = useState<Record<string, any[]>>({});
     const [fieldMapping, setFieldMapping] = useState<Record<string, string>>({});
     const [importLoader, setImportLoader] = useState(false);
-      const [isTableDialogOpen, setIsTableDialogOpen] = useState(false);
-  const [tableDialogcustomerData, setTableDialogCustomerData] = useState<customerGetDataInterface[]>([]);
 
 
-    const [imagePreviews, setImagePreviews] = useState<string[]>([]);
-    const [sitePlanPreview, setSitePlanPreview] = useState<string>("");
-    const [errors, setErrors] = useState<ErrorInterface>({});
     const router = useRouter();
     const { excelHeaders, file } = useCustomerImport();
-const [pendingValidData, setPendingValidData] = useState<any[]>([]);
+    const [customerFieldMasters, setCustomerFieldMasters] = useState<string[]>([]);
+    const [categorizedHeaders, setCategorizedHeaders] = useState<CategorizedHeader[]>([]);
+
+    const normalize = (str: string) =>
+        str
+            .toLowerCase()
+            .replace(/[^a-z0-9]/g, "");
+
+
     useEffect(() => {
         if (excelHeaders.length === 0) {
             // user opened this page directly
@@ -73,181 +55,55 @@ const [pendingValidData, setPendingValidData] = useState<any[]>([]);
         }
     }, [excelHeaders]);
 
-    const normalizeHeader = (value: string) => {
-    return value
-        ?.toLowerCase()
-        .replace(/\s+/g, "")       // remove spaces
-        .replace(/[^a-z0-9]/g, ""); // remove special characters
-};
-
-useEffect(() => {
-    if (!excelHeaders?.length) return;
-
-    const autoMapped: Record<string, string> = {};
-
-    excelHeaders.forEach((excelHeader) => {
-        const normalizedExcel = normalizeHeader(excelHeader);
-
-        const matchedField = mappingFields.find((field) => {
-            return normalizeHeader(field) === normalizedExcel;
-        });
-
-        if (matchedField) {
-            autoMapped[excelHeader] = matchedField;
-        }
-    });
-
-    setFieldMapping(autoMapped);
-}, [excelHeaders]);
-
-
-    // 🟩 Handle Input
-    const handleInputChange = useCallback(
-        (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-            const { name, value } = e.target;
-            setCustomerData((prev) => ({ ...prev, [name]: value }));
-            setErrors((prev) => ({ ...prev, [name]: "" }));
-        },
-        []
-    );
-
-    const handleSelectChange = useCallback(
-        (label: string, selected: string) => {
-            setCustomerData((prev) => ({ ...prev, [label]: selected }));
-            setErrors((prev) => ({ ...prev, [label]: "" }));
-        },
-        []
-    );
-
-
-    // Validate Form
-    const validateForm = () => {
-        const newErrors: ErrorInterface = {};
-        if (!customerData.Campaign?.name.trim())
-            newErrors.Campaign = "Campaign is required";
-        if (!customerData.CustomerType?.name.trim())
-            newErrors.CustomerType = "Customer Type is required";
-        if (!customerData.CustomerSubtype?.name.trim())
-            newErrors.CustomerSubtype = "Customer Subtype is required";
-        return newErrors;
-    };
-
-    //Submit Form
-    const handleSubmit = async () => {
-        try{
-            setImportLoader(true);
-             const formData = new FormData();
-              formData.append("fieldMapping", JSON.stringify(fieldMapping));
-               if (file) {
-            formData.append("file", file);    };
-                // api calling 
-                 const result = await importCustomer(formData);
-                 const invalidCount = result?.invalid?.length || 0;
-                 const importedCount = result?.imported?.length || 0;
-
-                
-        if(invalidCount > 0){
-                setTableDialogCustomerData(result.invalid);
-                 setPendingValidData(result.imported || []);
-            setIsTableDialogOpen(true);
-           
-            toast.error(`${result.invalid.length} records not imported`);
-            setImportLoader(false);      
- return;
-        };
-        if(importedCount > 0){
-            toast.success("Customer imported successfully!");
-             setImportLoader(false);
-             setTimeout(()=>{
-                 router.push("/customer");
-             },300)
-              
-               return;
-        };
-         toast.error("Failed to import customer");
-         setImportLoader(false);
-        }catch(error){
-             console.error("Customer import error:", error);
-    toast.error("Failed to import customer");
-    setImportLoader(false);
-        }
-
-
-        //  toast.error("Error importing customer");
-        // console.error("Customer import Error:", error);
-       
-    };
-
-    const finalizeValidImport = () => {
-  if (pendingValidData.length > 0) {
-    toast.success(`${pendingValidData.length} customers imported`);
-    router.push("/customer");
-  }
-};
-    const dropdownOptions = ["Option1", "Option2", "Option3"];
-
-    // Object-based fields (for ObjectSelect)
-    const objectFields = [
-        { key: "Campaign", fetchFn: getCampaign },
-        { key: "CustomerType", staticData: [] },
-        { key: "CustomerSubtype", staticData: [] } // dependent
-
-    ];
-
-    // Simple array fields (for normal Select)
-    const arrayFields = [
-        { key: "Verified", staticData: ["yes", "no"] },
-        { key: "Gender", staticData: ["male", "female", "other"] },
-        { key: "City", fetchFn: getCity },
-        { key: "Skill", fetchFn: getSkill },
-        { key: "Location", fetchFn: getLocation },
-    ];
-
-
     useEffect(() => {
-        const loadFieldOptions = async () => {
-            await handleFieldOptionsObject(objectFields, setFieldOptions);
-            await handleFieldOptions(arrayFields, setFieldOptions);
+        const loadCustomerFields = async () => {
+            const res = await getCustomerFields(); 
+             const activeFields = res.filter((e: any) => e.Status === "Active");
+            setCustomerFieldMasters(activeFields.map((f: any) => f.Name));
         };
-        loadFieldOptions();
+        loadCustomerFields();
     }, []);
 
 
-    useEffect(() => {
-        if (customerData.Campaign.id) {
-            fetchCustomerType(customerData.Campaign.id);
+
+
+    //Submit Form
+    const handleSubmit = async () => {
+        /*          const validationErrors = validateForm();
+                 if (Object.keys(validationErrors).length > 0) {
+                     setErrors(validationErrors);
+                     return;
+                 } */
+        setImportLoader(true);
+
+
+        const formData = new FormData();
+        formData.append("fieldMapping", JSON.stringify(fieldMapping))
+
+        if (file) {
+            formData.append("file", file);
+        }
+        //console.log(customerData)
+        const result = await importCustomer(formData);
+
+        if (result) {
+            toast.success("Customer imported successfully!");
+            setImportLoader(false);
+            router.push("/customer");
+            return;
         } else {
-            setFieldOptions((prev) => ({ ...prev, CustomerType: [] }));
+            toast.error("Failed to import customer");
         }
 
-        if (customerData.Campaign.id && customerData.CustomerType.id) {
-            fetchCustomerSubType(customerData.Campaign.id, customerData.CustomerType.id);
-        } else {
-            setFieldOptions((prev) => ({ ...prev, CustomerSubtype: [] }));
-        }
-    }, [customerData.Campaign.id, customerData.CustomerType.id]);
-
-    const fetchCustomerType = async (campaignId: string) => {
-        try {
-            const res = await getTypesByCampaign(campaignId);
-            setFieldOptions((prev) => ({ ...prev, CustomerType: res || [] }));
-        } catch (error) {
-            console.error("Error fetching types:", error);
-            setFieldOptions((prev) => ({ ...prev, CustomerType: [] }));
-        }
+        //  toast.error("Error importing customer");
+        // console.error("Customer import Error:", error);
+        router.push("/customer");
+        setImportLoader(false);
     };
 
-    const fetchCustomerSubType = async (campaignId: string, customertypeId: string) => {
-        try {
-            const res = await getSubtypeByCampaignAndType(campaignId, customertypeId);
-            setFieldOptions((prev) => ({ ...prev, CustomerSubtype: res || [] }));
-        } catch (error) {
-            console.error("Error fetching types:", error);
-            setFieldOptions((prev) => ({ ...prev, CustomerSubtype: [] }));
-        }
-    };
 
-    const mappingFields = [
+
+    const systemFields = [
         "Campaign",
         "CustomerType",
         "CustomerSubType",
@@ -255,36 +111,68 @@ useEffect(() => {
         "ContactNumber",
         "City",
         "Location",
-        "Experience",
+        "SubLocation",
+        "Area",
         "Adderess",
         "Email",
-        "Facillities ",
-        "Skill",
+        "Facillities",
         "ReferenceId",
         "CustomerId",
         "CustomerDate",
         "CustomerYear",
-        "Other",
+        "Price",
         "URL",
-        "SalaryRange",
+        "Other",
         "Description",
         "Video",
         "GoogleMap",
         "Verified",
     ];
 
+    const customerFields =[  ...customerFieldMasters,...systemFields];
+
+
+    useEffect(() => {
+        if (!excelHeaders.length) return;
+
+        const categorized: CategorizedHeader[] = excelHeaders.map((header) => {
+            const systemMatch = systemFields.find(
+                (field) => normalize(field) === normalize(header)
+            );
+
+            if (systemMatch) {
+                return {
+                    header,
+                    type: "system",
+                    mappedTo: systemMatch, // auto-mapped
+                };
+            }
+
+            return {
+                header,
+                type: "custom",
+                mappedTo: "", // user will select
+            };
+        });
+
+        setCategorizedHeaders(categorized);
+
+        // Also initialize fieldMapping
+        const initialMapping: Record<string, string> = {};
+        categorized.forEach((item) => {
+            if (item.mappedTo) {
+                initialMapping[item.header] = item.mappedTo;
+            }
+        });
+
+        setFieldMapping(initialMapping);
+    }, [excelHeaders]);
+
+
+
 
     return (
         <div className=" min-h-screen flex justify-center">
-            <InvalidimportData
-             isOpen={isTableDialogOpen}
-        title="Customers By"
-        data={tableDialogcustomerData}
-        onClose={() => {
-          setIsTableDialogOpen(false)
-         finalizeValidImport();
-        }}
-            />
             <Toaster position="top-right" />
             <div className="w-full">
                 <div className="flex justify-end mb-4">
@@ -303,34 +191,65 @@ useEffect(() => {
                             </h1>
                         </div>
 
-                        <h2 className=" text-xl font-semibold text-gray-700 my-5 mt-10">Map Fields</h2>
-                        <div className="grid grid-cols-2 max-md:grid-cols-1 gap-4 mt-5">
-                            {excelHeaders.map((header) => {
-                                /* if(header==="Campaign" || header==="Customer Type" || header==="Property Type" || header==="Customer Subtype")
-                                    return null; */
-                                return <div key={header} className="flex flex-col">
-                                    <label className="text-sm font-medium mb-4">{header}</label>
+                        <h2 className="text-xl font-semibold text-gray-700 mt-8">
+                            Map System Fields
+                        </h2>
 
-                                    <SingleSelect
-                                        label="Map To"
-                                        options={mappingFields}
-                                        value={fieldMapping[header] || ""}
-                                        onChange={(value) =>
-                                            setFieldMapping((prev) => ({
-                                                ...prev,
-                                                [header]: value,
-                                            }))
-                                        }
-                                    />
+                        <div className="grid grid-cols-2 gap-4 mt-4">
+                            {categorizedHeaders
+                                .filter((item) => item.type === "system")
+                                .map(({ header }) => (
+                                    <div key={`system-${header}`}>
+                                        <label className="text-sm font-medium mb-2 block">
+                                            {header}
+                                        </label>
 
-
-                                </div>
-                            })}
+                                        <SingleSelect
+                                            label="Map to system field"
+                                            options={systemFields}
+                                            value={fieldMapping[header] || ""}
+                                            onChange={(value) =>
+                                                setFieldMapping((prev) => ({
+                                                    ...prev,
+                                                    [header]: value,
+                                                }))
+                                            }
+                                        />
+                                    </div>
+                                ))}
                         </div>
+                        <h2 className="text-xl font-semibold text-gray-700 mt-10">
+                           Map Custom Fields
+                        </h2>
+
+                        <div className="grid grid-cols-2 gap-4 mt-4">
+                            {categorizedHeaders
+                                .filter((item) => item.type === "custom")
+                                .map(({ header }) => (
+                                    <div key={`custom-${header}`}>
+                                        <label className="text-sm font-medium mb-2 block">
+                                            {header}
+                                        </label>
+
+                                        <SingleSelect
+                                            label="Map to custom field"
+                                            options={customerFields}
+                                            value={fieldMapping[header] || ""}
+                                            onChange={(value) =>
+                                                setFieldMapping((prev) => ({
+                                                    ...prev,
+                                                    [header]: value,
+                                                }))
+                                            }
+                                        />
+                                    </div>
+                                ))}
+                        </div>
+
 
                         <div className="flex justify-end mt-4">
 
-                            <SaveButton text={` ${importLoader ? "Saving.." : "Save Import"}`} icon={importLoader&&<LoaderCircle/>} onClick={handleSubmit} />
+                            <SaveButton text={` ${importLoader ? "Saving.." : "Save Import"}`} icon={importLoader && <LoaderCircle />} onClick={handleSubmit} />
 
                         </div>
                     </form>

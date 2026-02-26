@@ -1,11 +1,12 @@
-export const BASE_URL = "https://apiconsult.ibigdata.in/api";
+export const BASE_URL = "https://apidomain.ibigdata.in/api";
 //https://live-project-backend-1.onrender.com
 //https://propertyapi.aileadgenie.cloud/api
-//https://apiconsult.ibigdata.in
+//https://apidomain.ibigdata.in
 //https://apiedu.ibigdata.in
 //https://apiwbh.ibigdata.in
 //https://apiproperty.ibigdata.in
 //https://apitravel.ibigdata.in
+//https://apiairbnb.ibigdata.in
 
 export const API_ROUTES = {
   CONTACT: {
@@ -18,7 +19,7 @@ export const API_ROUTES = {
     DELETEALL: `${BASE_URL}/contact/delete/all`,
     CONTACTIMPORT: `${BASE_URL}/contact/import`,
     CONTACTEXCELHEADERS: `${BASE_URL}/contact/import/headers`,
-    ASSIGNCONTACT:`${BASE_URL}/contact/assign`
+    ASSIGNCONTACT: `${BASE_URL}/contact/assign`
   },
   CUSTOMER: {
     GET_ALL: `${BASE_URL}/customer`,
@@ -31,7 +32,7 @@ export const API_ROUTES = {
     DELETEALL: `${BASE_URL}/customer`,
     CUSTOMERIMPORT: `${BASE_URL}/customer/import`,
     CUSTOMEREXCELHEADERS: `${BASE_URL}/customer/import/headers`,
-    ASSIGNCUSTOMER:`${BASE_URL}/customer/assign`
+    ASSIGNCUSTOMER: `${BASE_URL}/customer/assign`
   },
   COMPANYPROJECTS: {
     GET_ALL: `${BASE_URL}/com/pro`,
@@ -96,15 +97,17 @@ export const API_ROUTES = {
       ADD: `${BASE_URL}/mas/type`,
       UPDATE: (id: string) => `${BASE_URL}/mas/type/${id}`,
       DELETE: (id: string) => `${BASE_URL}/mas/type/${id}`,
+      DELETEALL: `${BASE_URL}/mas/type`,
     },
     SUBTYPE: {
       GET_ALL: `${BASE_URL}/mas/sub`,
       GET_BY_ID: (id: string) => `${BASE_URL}/mas/sub/${id}`,
-      GET_ALL_BY_CAMPAIGN_AND_TYPE: (campaignid: string,typeid:string) => `${BASE_URL}/mas/sub/filter/${campaignid}/${typeid}`,
+      GET_ALL_BY_CAMPAIGN_AND_TYPE: (campaignid: string, typeid: string) => `${BASE_URL}/mas/sub/filter/${campaignid}/${typeid}`,
       GET_BY_PARAMS: (params: string) => `${BASE_URL}/mas/sub?${params}`,
       ADD: `${BASE_URL}/mas/sub`,
       UPDATE: (id: string) => `${BASE_URL}/mas/sub/${id}`,
       DELETE: (id: string) => `${BASE_URL}/mas/sub/${id}`,
+      DELETEALL: `${BASE_URL}/mas/sub`,
     },
     CITY: {
       GET_ALL: `${BASE_URL}/mas/city`,
@@ -122,6 +125,17 @@ export const API_ROUTES = {
       ADD: `${BASE_URL}/mas/loc`,
       UPDATE: (id: string) => `${BASE_URL}/mas/loc/${id}`,
       DELETE: (id: string) => `${BASE_URL}/mas/loc/${id}`,
+      DELETEALL: `${BASE_URL}/mas/loc`,
+    },
+    SUBLOCATION: {
+      GET_ALL: `${BASE_URL}/mas/subloc`,
+      GET_BY_ID: (id: string) => `${BASE_URL}/mas/subloc/${id}`,
+      GET_ALL_BY_CITY_LOCATION: (cityId: string, locationId: string) => `${BASE_URL}/mas/subloc/cityloc/${cityId}/${locationId}`,
+      GET_BY_PARAMS: (params: string) => `${BASE_URL}/mas/subloc?${params}`,
+      ADD: `${BASE_URL}/mas/subloc`,
+      UPDATE: (id: string) => `${BASE_URL}/mas/subloc/${id}`,
+      DELETE: (id: string) => `${BASE_URL}/mas/subloc/${id}`,
+      DELETEALL: `${BASE_URL}/mas/subloc`,
     },
     FACILITIES: {
       GET_ALL: `${BASE_URL}/mas/fac`,
@@ -130,14 +144,6 @@ export const API_ROUTES = {
       ADD: `${BASE_URL}/mas/fac`,
       UPDATE: (id: string) => `${BASE_URL}/mas/fac/${id}`,
       DELETE: (id: string) => `${BASE_URL}/mas/fac/${id}`,
-    },
-      SKILL: {
-      GET_ALL: `${BASE_URL}/mas/skill`,
-      GET_BY_ID: (id: string) => `${BASE_URL}/mas/skill/${id}`,
-      GET_BY_PARAMS: (params: string) => `${BASE_URL}/mas/skill?${params}`,
-      ADD: `${BASE_URL}/mas/skill`,
-      UPDATE: (id: string) => `${BASE_URL}/mas/skill/${id}`,
-      DELETE: (id: string) => `${BASE_URL}/mas/skill/${id}`,
     },
     AMENITIES: {
       GET_ALL: `${BASE_URL}/mas/amen`,
@@ -204,6 +210,22 @@ export const API_ROUTES = {
       UPDATE: (id: string) => `${BASE_URL}/mas/ref/${id}`,
       DELETE: (id: string) => `${BASE_URL}/mas/ref/${id}`,
     },
+    PRICE: {
+      GET_ALL: `${BASE_URL}/mas/price`,
+      GET_BY_ID: (id: string) => `${BASE_URL}/mas/price/${id}`,
+      GET_BY_PARAMS: (params: string) => `${BASE_URL}/mas/price?${params}`,
+      ADD: `${BASE_URL}/mas/price`,
+      UPDATE: (id: string) => `${BASE_URL}/mas/price/${id}`,
+      DELETE: (id: string) => `${BASE_URL}/mas/price/${id}`,
+    },
+    CUSTOMERFIELDS: {
+      GET_ALL: `${BASE_URL}/mas/customerFields`,
+      GET_BY_ID: (id: string) => `${BASE_URL}/mas/customerFields/${id}`,
+      GET_BY_PARAMS: (params: string) => `${BASE_URL}/mas/customerFields?${params}`,
+      ADD: `${BASE_URL}/mas/customerFields`,
+      UPDATE: (id: string) => `${BASE_URL}/mas/customerFields/${id}`,
+      DELETE: (id: string) => `${BASE_URL}/mas/customerFields/${id}`,
+    },
 
     // 🔹 NEW MASTER MODULES ADDED BELOW 🔹
     EXPENSES: {
@@ -230,7 +252,7 @@ export const API_ROUTES = {
       UPDATE: (id: string) => `${BASE_URL}/mas/statustype/${id}`,
       DELETE: (id: string) => `${BASE_URL}/mas/statustype/${id}`,
     },
-     CONTACTSTATUSTYPE: {
+    CONTACTSTATUSTYPE: {
       GET_ALL: `${BASE_URL}/mas/con/statustype`,
       GET_BY_ID: (id: string) => `${BASE_URL}/mas/con/statustype/${id}`,
       GET_BY_PARAMS: (params: string) => `${BASE_URL}/mas/con/statustype?${params}`,
@@ -261,7 +283,7 @@ export const API_ROUTES = {
       ADD: `${BASE_URL}/v1/templates`,
       UPDATE: (id: string) => `${BASE_URL}/v1/templates/${id}`,
       DELETE: (id: string) => `${BASE_URL}/v1/templates/${id}`,
-      MAILALL:`${BASE_URL}/v1/messages/email`
+      MAILALL: `${BASE_URL}/v1/messages/email`
     },
     WHATSAPP: {
       GET_ALL: `${BASE_URL}/v1/templates?type=whatsapp`,
@@ -270,8 +292,14 @@ export const API_ROUTES = {
       ADD: `${BASE_URL}/v1/templates`,
       UPDATE: (id: string) => `${BASE_URL}/v1/templates/${id}`,
       DELETE: (id: string) => `${BASE_URL}/v1/templates/${id}`,
-      WHATSAPPALL:`${BASE_URL}/v1/messages/whatsapp`
+      WHATSAPPALL: `${BASE_URL}/v1/messages/whatsapp`
     },
+  },
+  SETTINGS: {
+    CUSTOMERFIELDLABEL: {
+      GET_ALL: `${BASE_URL}/customerfieldlabels`,
+      UPDATE: `${BASE_URL}/customerfieldlabels`,
+    }
   },
   FINANCIAL: {
     INCOMEMARKETING: {
@@ -319,10 +347,10 @@ export const API_ROUTES = {
     DELETE: (id: String) => `${BASE_URL}/admin/${id}`,
   },
 
-  REQUESTUSER:{
+  REQUESTUSER: {
     SIGNUP: `${BASE_URL}/user/newusersignup`,
     GET_ALL: `${BASE_URL}/user/newusers`,
-    ACCEPTREQUEST:(id: String) => `${BASE_URL}/user/newusers/${id}`,
+    ACCEPTREQUEST: (id: String) => `${BASE_URL}/user/newusers/${id}`,
     DENYREQUEST: (id: String) => `${BASE_URL}/user/newusers/${id}`
   }
 };

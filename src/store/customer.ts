@@ -53,6 +53,7 @@ export const getFilteredCustomer = async (params: string) => {
     const response = await fetch(API_ROUTES.CUSTOMER.GET_BY_PARAMS(params), { credentials: "include" });
     if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
     const data = await response.json();
+    console.log(" params : ", params,"\n"," Data:", data)
     return data;
   }
   catch (error) {
@@ -106,6 +107,11 @@ export const importCustomer = async (formData: FormData) => {
     }
 
     const result = await response.json();
+    console.log(" import customer result ", result)
+    if (!result.success) {
+      toast.error(result.message ?? "Something went wrong")
+      throw new Error(result.message ?? "Something went wrong")
+    }
     return result;
   } catch (error) {
     console.error("SERVER ERROR: ", error);
@@ -149,6 +155,9 @@ export const assignCustomer = async (data: customerAssignInterface) => {
     });
 
     if (!response.ok) {
+      let data = await response.json();
+     console.log(" status code is ",data)
+     return data;
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 

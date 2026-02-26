@@ -6,14 +6,11 @@ export interface customerAllDataInterface {
   ContactNumber: string;
   City: { id: string; name: string };
   Location: { id: string; name: string };
-  Exprience?: string;
-  Area?: string;
+  SubLocation: { id: string; name: string };
+  Area: string;
   Address: string;
   Email: string;
-  Facilities?: string;
-  Skill?: string;
-  url?: string;
-  salaryRange?: string;
+  Facilities: string;
   ReferenceId: string;
   CustomerId: string;
   CustomerDate: string;
@@ -22,8 +19,11 @@ export interface customerAllDataInterface {
   Description: string;
   Video: string;
   GoogleMap: string;
+  Price?: string;
+  URL?: string;
   isFavourite?: boolean;
   Verified: string;
+  CustomerFields?: any[];
   CustomerImage: File[];
   SitePlan: File
 }
@@ -36,10 +36,11 @@ export interface customerImportDataInterface {
   ContactNumber: string;
   City: string;
   Location: string;
-  Experience: string;
-  Adderess: string;
+  SubLocation: string;
+  Area: string;
+  Address: string;
   Email: string;
-  Skill: string;
+  Facilities: string;
   ReferenceId: string;
   CustomerId: string;
   CustomerDate: string;
@@ -48,6 +49,8 @@ export interface customerImportDataInterface {
   Description: string;
   Video: string;
   GoogleMap: string;
+  Price?: string;
+  URL?: string;
   isFavourite?: boolean;
   Verified: string;
 }
@@ -59,31 +62,69 @@ export interface customerGetDataInterface {
   SubType: string;
   Name: string;
   Description?: string;
-  ReferenceId?: string;
   Email: string;
-  SalaryRange?: string;
-  Experience?: string;
   City: string;
   Location: string;
+  SubLocation?: string;
+  ReferenceId?: string;
   isFavourite?: boolean;
+  isChecked?: boolean;
   ContactNumber: string;
   AssignTo: string;
   Date: string;
-  SitePlan?: string;
-  // that add by DJ
   CustomerType: string;
   CustomerSubType: string;
   CustomerName: string;
   Reason: string;
-  Skill? : string;
+ 
   Facillities: string;
   CustomerId: string;
   Adderess: string;
   CustomerYear: string;
   Area: string;
   Other: string;
+  SitePlan?: string;
+
+  URL?:string;
+  Video?:string;
+  GoogleMap?:string;
+  Price?:string;
+
+  CustomerFields?: any;
 }
 
+// we are using this for Tablesetting button
+// export interface customerGetDataInterface {
+//   _id: string;
+//   Campaign: string;
+//   Type: string;
+//   SubType: string;
+//   Name: string;
+//   Description?: string;
+//   ReferenceId?: string;
+//   Email: string;
+//   SalaryRange?: string;
+//   Experience?: string;
+//   City: string;
+//   Location: string;
+//   isFavourite?: boolean;
+//   ContactNumber: string;
+//   AssignTo: string;
+//   Date: string;
+//   SitePlan?: string;
+//   // that add by DJ
+//   CustomerType: string;
+//   CustomerSubType: string;
+//   CustomerName: string;
+//   Reason: string;
+//   Skill? : string;
+//   Facillities: string;
+//   CustomerId: string;
+//   Adderess: string;
+//   CustomerYear: string;
+//   Area: string;
+//   Other: string;
+// }
 
 export interface CustomerAdvInterface {
   _id: string[];
@@ -100,8 +141,10 @@ export interface CustomerAdvInterface {
 }
 
 export interface customerAssignInterface {
-  customerIds: string[];
   assignToId: string;
+  customerIds?: string[];
+  campaign?: string;
+  assignMode?: "selected" | "campaign" | "all";
 }
 
 export interface contactAssignInterface {
@@ -118,4 +161,11 @@ export interface DeleteDialogDataInterface {
   customerName: string;
   ContactNumber: string;
   isFavourite?: boolean;
+  isChecked?: boolean;
+}
+
+
+export interface CheckDialogDataInterface {
+  id: string;
+  isChecked?: boolean;
 }

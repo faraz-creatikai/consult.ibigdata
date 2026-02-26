@@ -12,11 +12,13 @@ interface ListItem {
 interface ListPopupProps {
   title: string;
   list: ListItem[];
-  selected: string | null | undefined;   // ✅ allow undefined
+  selected: string | string[] | undefined;   // ✅ allow undefined
   onSelect: (id: string) => void;
   onSubmit: () => void;
   submitLabel: string;
   onClose: () => void;
+  multiSelect?: boolean;
+  children?: React.ReactNode;
 }
 
 
@@ -28,6 +30,8 @@ export default function ListPopup({
   onSubmit,
   submitLabel,
   onClose,
+  multiSelect,
+  children
 }: ListPopupProps) {
   return (
     <PopupMenu onClose={onClose}>
@@ -39,6 +43,7 @@ export default function ListPopup({
             {title.split(" ").slice(1).join(" ")}
           </span>
         </h2>
+        {children}
 
         <div className="max-h-[40vh] flex flex-col gap-2 overflow-y-auto">
           {list.length > 0 ? (
@@ -50,11 +55,16 @@ export default function ListPopup({
                   <div className=" text-xs text-gray-500 truncate max-w-[200px]">{item?.body}</div>
                   </div>
 
-                  <input
-                    type="checkbox"
-                    checked={selected === item._id}
-                    onChange={() => onSelect(item._id)}
-                  />
+                 <input
+  type="checkbox"
+  checked={
+    multiSelect
+      ? (Array.isArray(selected) ? selected.includes(item._id) : false) // multi-select
+      : selected === item._id // single-select
+  }
+  onChange={() => onSelect(item._id)}
+/>
+
                 </label>
               </div>
             ))
