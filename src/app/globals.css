@@ -86,44 +86,43 @@
 
 
   /*custom colors */
---color-primary: #4318C4;
---color-primary-dark: #3A14A8;
---color-primary-darker: #2F108A;
---color-primary-light: #EDE9FE;
---color-primary-lighter: #F5F3FF;
+ /*custom colors */
+  --color-primary: #00ACC1;
+  --color-primary-dark: #0097A7;
+  --color-primary-darker: #00838F;
+  --color-primary-light:#CFFAFE;
+  --color-primary-lighter:#E0F7FA;
 
---color-secondary: #6D28D9;
---color-secondary-dark: #5B21B6;
---color-secondary-darker:  #0B0620;
---color-secondary-light: #C4B5FD;
+  --color-secondary: #22d3ee;
+  --color-secondary-dark: #06b6d4;
+  --color-secondary-darker: #164e63;
+  --color-secondary-light:#80deea;
 
---color-accent: #A78BFA;
---color-muted: #DDD6FE;
---color-destructive: #F87171;
+  --color-accent: #A5D6A7;
+  --color-muted: #C8E6C9;
+  --color-destructive: #F87171;
 
-/* Additional colors */
---color-gray: #6b7280;
---color-textlightdark: #ffffff;
---color-bglightdark: #000000;
+  /* Additional colors */
+  --color-gray: #6b7280;
+  --color-textlightdark: #ffffff;
+  --color-bglightdark:#000000;
 
-/* table phone screen color */
---table: #7C3AED;
+  /* table phone screen color */
+   --table: #7888e4;
 
-/* dark/light */
+    /* dark/light */
 
---color-bgdark: #0F0A2A;
---color-bglight: white;
+  --color-bgdark:#04171c;
+  --color-bglight:white;
 
---color-childbglight: #EDE9FE;
---color-childbgdark: #140F3C;
+  --color-childbglight:#EDE9FE;
+  --color-childbgdark:#052b36;
 
---color-txtdark: black;
---color-txtlight: white;
+  --color-txtdark:black;
+  --color-txtlight:white;
 
---color-bghoverlight: #DDD6FE;
---color-bghoverdark: #2F108A;
-
-
+  --color-bghoverlight:gray;
+  --color-bghoverdark:red;
 
   /* app font */
   --app-font:;

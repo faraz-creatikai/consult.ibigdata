@@ -257,7 +257,7 @@ const TableDialog = ({
                                                     </td>
                                                     <td className="px-4 py-4 font-semibold text-gray-800 dark:text-gray-400">{item.Name || 'N/A'}</td>
                                                     <td className="px-4 py-4 max-w-[180px]">
-                                                        <span className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">{item.Description || 'N/A'}</span>
+                                                        <span className="text-sm text-gray-600 dark:text-gray-400 ">{item.Description || 'N/A'}</span>
                                                     </td>
                                                     <td className="px-4 py-4 text-gray-700 dark:text-gray-400">{item.Location || 'N/A'}</td>
                                                     <td className="px-4 py-4 text-gray-700 dark:text-gray-400">{item.SubLocation || 'N/A'}</td>

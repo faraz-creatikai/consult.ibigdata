@@ -120,9 +120,6 @@ export default function Customer() {
   const [isfollowupDialogOpen, setIsFollowupDialogOpen] = useState(false);
   const [isFollowupDeleteDialogOpen, setIsFollowupDeleteDialogOpen] = useState(false);
   const [followupdeleteDialogData, setFollowupDeleteDialogData] = useState<FollowupDeleteDialogDataInterface | null>(null);
-
-  const [isMapOpen, setIsMapOpen] = useState(false);
-  const [selectedAddress, setSelectedAddress] = useState<string | null>(null);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [customerToEdit, setCustomerToEdit] = useState<any>(null);
   const [assignMode, setAssignMode] = useState<"selected" | "campaign">("selected");
@@ -130,6 +127,12 @@ export default function Customer() {
   const [campaignList, setCampaignList] = useState<
     { _id: string; Name: string; Status: string }[]
   >([]);
+
+  const [isMapOpen, setIsMapOpen] = useState(false);
+  const [selectedAddress, setSelectedAddress] = useState<string | null>(null);
+
+
+
   const scrollRef = useHorizontalScroll();
   const searchParams = useSearchParams();
   const { admin } = useAuth();
@@ -223,7 +226,6 @@ export default function Customer() {
       { key: "Email", label: getLabel("Email", "Email"), isPinned: true, visible: true },
       { key: "Facillities", label: getLabel("Facillities", "Facillities"), isPinned: true, visible: true },
       { key: "CustomerId", label: getLabel("CustomerId", "Customer Id"), isPinned: true, visible: true },
-      { key: "date", label: getLabel("CustomerDate", "Date"), isPinned: true, visible: true },
       { key: "CustomerYear", label: getLabel("CustomerYear", "Customer Year"), isPinned: true, visible: true },
       { key: "Other", label: getLabel("Other", "Other"), isPinned: true, visible: true },
       { key: "description", label: getLabel("Description", "Description"), isPinned: true, visible: true },
@@ -237,6 +239,7 @@ export default function Customer() {
       { key: "video", label: getLabel("Video", "Video"), isPinned: true, visible: true },
       { key: "googlemap", label: getLabel("GoogleMap", "GoogleMap"), isPinned: true, visible: true },
       { key: "price", label: getLabel("Price", "Price"), isPinned: true, visible: true },
+      { key: "date", label: getLabel("CustomerDate", "Date"), isPinned: true, visible: true },
       /* { key: "actions", label: "Actions", isPinned: true, visible: true }, */
     ]
 
@@ -298,14 +301,12 @@ export default function Customer() {
     );
   }, [DEFAULT_COLUMNS]);
 
-
   const fetchCampaigns = async () => {
     const res = await getCampaign();
     if (res) {
       setCampaignList(res);
     }
   };
-
 
   useEffect(() => {
     localStorage.setItem("table-columns", JSON.stringify(columns));
@@ -1151,8 +1152,8 @@ export default function Customer() {
       setIsAssignOpen(false);
       return response;
     }
-//console.log(" faraz is here wow brother ",response)
-   toast.error(response.message);
+    //console.log(" faraz is here wow brother ",response)
+    toast.error(response.message);
     setIsAssignOpen(false);
   };
 
@@ -1401,6 +1402,7 @@ export default function Customer() {
 
 
 
+
       <CustomerEditDialog
         isOpen={isEditOpen}
         customerId={customerToEdit}
@@ -1410,7 +1412,6 @@ export default function Customer() {
         }}
         onCustomerUpdated={handleCustomerUpdated}
       />
-
 
       {/* customer by contact number */}
       <TableDialog
@@ -2134,7 +2135,6 @@ export default function Customer() {
                     <DateSelector label="From" value={filters.StartDate[0]} onChange={(v) => handleSelectChange("StartDate", v)} />
                     <DateSelector label="To" value={filters.EndDate[0]} onChange={(v) => handleSelectChange("EndDate", v)} />
                     <div>
-
                       <input
                         id="favouriteFilter"
                         type="checkbox"
@@ -2148,11 +2148,11 @@ export default function Customer() {
                       <label
                         htmlFor="favouriteFilter"
                         className={`
-        inline-flex items-center justify-center
-        h-10 px-4 rounded-md border
-        text-sm font-medium cursor-pointer
-        transition-colors duration-200 gap-2
-                 ${filters.isFavourite
+    inline-flex items-center justify-center
+    h-10 px-4 rounded-md border
+    text-sm font-medium cursor-pointer
+    transition-colors duration-200 gap-2
+    ${filters.isFavourite
                             ? "bg-[var(--color-primary)] text-white border-[var(--color-primary)]"
                             : "bg-white text-gray-700 border-gray-300"
                           }
@@ -2572,9 +2572,7 @@ export default function Customer() {
                                   case "reference":
                                     cellValue = item.ReferenceId;
                                     break;
-                                  case "date":
-                                    cellValue = item.Date;
-                                    break;
+
                                   case "url":
                                     cellValue = item.URL;
                                     break;
@@ -2587,7 +2585,9 @@ export default function Customer() {
                                   case "price":
                                     cellValue = item.Price;
                                     break;
-
+                                  case "date":
+                                    cellValue = item.Date;
+                                    break;
                                   case "actions":
                                     cellValue = (
                                       <div className="grid grid-cols-2 gap-3 items-center h-full">
@@ -2607,7 +2607,7 @@ export default function Customer() {
                                         >
                                           <MdEdit />
                                         </Button>
-                                        <Button
+                                        {admin?.role !== "administrator" && <Button
                                           sx={{ backgroundColor: "#FDECEA", color: "#C62828", minWidth: "32px", height: "32px", borderRadius: "8px" }}
                                           onClick={() => {
                                             setIsDeleteDialogOpen(true);
@@ -2620,7 +2620,8 @@ export default function Customer() {
                                           }}
                                         >
                                           <MdDelete />
-                                        </Button>
+                                        </Button>}
+
                                         <Button
                                           sx={{ backgroundColor: "#FFF0F5", color: item.isFavourite ? "#E91E63" : "#C62828", minWidth: "32px", height: "32px", borderRadius: "8px" }}
                                           onClick={() =>

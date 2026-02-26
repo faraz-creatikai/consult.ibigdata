@@ -11,8 +11,9 @@ import { useAuth } from "@/context/AuthContext";
 
 export default function MobileHamburger() {
 
+
    const { admin, isLoading, login } = useAuth();
-   const data = [
+  const data = [
   {
     title: "Dashboard",
     url: "/dashboard",
@@ -65,7 +66,6 @@ export default function MobileHamburger() {
   }
 
 ]
-
   const [open, setOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
   const buttonRef = useRef<HTMLButtonElement | null>(null);

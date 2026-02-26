@@ -56,7 +56,7 @@ export default function CustomerAdd() {
     Facilities: "",
     ReferenceId: "",
     CustomerId: "",
-    CustomerDate: dayjs().format("YYYY-MM-DD"),
+    CustomerDate:  dayjs().format("YYYY-MM-DD"),
     CustomerYear: "",
     Other: "",
     Price: "",

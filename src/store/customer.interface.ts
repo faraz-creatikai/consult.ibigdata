@@ -140,6 +140,7 @@ export interface CustomerAdvInterface {
   Limit: string[];
 }
 
+
 export interface customerAssignInterface {
   assignToId: string;
   customerIds?: string[];

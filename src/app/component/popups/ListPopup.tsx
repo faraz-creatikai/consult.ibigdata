@@ -6,7 +6,7 @@ import PopupMenu from "./PopupMenu";
 interface ListItem {
   _id: string;
   name: string;
-  body?:string;
+  body?: string;
 }
 
 interface ListPopupProps {
@@ -31,12 +31,12 @@ export default function ListPopup({
   submitLabel,
   onClose,
   multiSelect,
-  children
+  children,
 }: ListPopupProps) {
   return (
     <PopupMenu onClose={onClose}>
       <div className="flex flex-col gap-8 py-6 px-2 m-2 bg-white w-full max-w-[400px] rounded-md">
-        
+
         <h2 className="text-2xl text-[var(--color-secondary-darker)] px-6 font-extrabold">
           {title.split(" ")[0]}{" "}
           <span className="text-[var(--color-primary)]">
@@ -44,26 +44,25 @@ export default function ListPopup({
           </span>
         </h2>
         {children}
-
         <div className="max-h-[40vh] flex flex-col gap-2 overflow-y-auto">
           {list.length > 0 ? (
             list.map((item) => (
               <div key={item._id}>
                 <label className="flex justify-between gap-2 cursor-pointer px-6 py-2 hover:bg-gray-100">
                   <div className=" flex flex-col gap-1">
-                  <div>{item.name}</div>
-                  <div className=" text-xs text-gray-500 truncate max-w-[200px]">{item?.body}</div>
+                    <div>{item.name}</div>
+                    <div className=" text-xs text-gray-500 truncate max-w-[200px]">{item?.body}</div>
                   </div>
 
-                 <input
-  type="checkbox"
-  checked={
-    multiSelect
-      ? (Array.isArray(selected) ? selected.includes(item._id) : false) // multi-select
-      : selected === item._id // single-select
-  }
-  onChange={() => onSelect(item._id)}
-/>
+                  <input
+                    type="checkbox"
+                    checked={
+                      multiSelect
+                        ? (Array.isArray(selected) ? selected.includes(item._id) : false) // multi-select
+                        : selected === item._id // single-select
+                    }
+                    onChange={() => onSelect(item._id)}
+                  />
 
                 </label>
               </div>
