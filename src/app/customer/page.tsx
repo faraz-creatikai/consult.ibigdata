@@ -1615,8 +1615,7 @@ export default function Customer() {
                         >
                           <MdEdit />
                         </Button>
-
-                        <Button
+{admin?.role === "administrator"&&<Button
                           sx={{
                             backgroundColor: "#FDECEA",
                             color: "#C62828",
@@ -1635,6 +1634,7 @@ export default function Customer() {
                         >
                           <MdDelete />
                         </Button>
+}
                       </div>
                     </div>
                   ))
@@ -2607,7 +2607,7 @@ export default function Customer() {
                                         >
                                           <MdEdit />
                                         </Button>
-                                        {admin?.role !== "administrator" && <Button
+                                        {admin?.role === "administrator" && <Button
                                           sx={{ backgroundColor: "#FDECEA", color: "#C62828", minWidth: "32px", height: "32px", borderRadius: "8px" }}
                                           onClick={() => {
                                             setIsDeleteDialogOpen(true);
