@@ -30,8 +30,13 @@ import {
 } from "@/components/ui/sidebar";
 import { title } from "process";
 import { useAuth } from "@/context/AuthContext";
+import { useCustomerFieldLabel } from "@/context/customer/CustomerFieldLabelContext";
 
-// This is sample data.
+
+
+export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+   const { getLabel, labels } = useCustomerFieldLabel();
+   // This is sample data.
 const data = {
   navMain: [
     {
@@ -118,7 +123,7 @@ const data = {
           url: "/masters/sublocation",
         },
         {
-          title: "Facilities",
+          title: getLabel("Facillities", "Facillities"),
           url: "/masters/facilities",
         },
         {
@@ -281,8 +286,6 @@ const data = {
     },
   ],
 };
-
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { state } = useSidebar();
   const { admin, isLoading } = useAuth();
   if (isLoading) return null;

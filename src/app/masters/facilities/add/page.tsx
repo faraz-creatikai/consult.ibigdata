@@ -11,12 +11,14 @@ import { addFacilities } from "@/store/masters/facilities/facilities";
 import BackButton from "@/app/component/buttons/BackButton";
 import SaveButton from "@/app/component/buttons/SaveButton";
 import MasterProtectedRoute from "@/app/component/MasterProtectedRoutes";
+import { useCustomerFieldLabel } from "@/context/customer/CustomerFieldLabelContext";
 
 interface ErrorInterface {
   [key: string]: string;
 }
 
 export default function FacilitiesAdd() {
+   const { getLabel, labels } = useCustomerFieldLabel();
   const [facilitiesData, setFacilitiesData] = useState<facilitiesAllDataInterface>({
     Name: "",
     Status: "",
@@ -92,7 +94,7 @@ export default function FacilitiesAdd() {
             <form onSubmit={(e) => e.preventDefault()} className="w-full">
               <div className="mb-8 text-left border-b pb-4 border-gray-200">
                 <h1 className="text-3xl font-extrabold text-[var(--color-secondary-darker)] leading-tight tracking-tight">
-                  Add <span className="text-[var(--color-primary)]">Facility</span>
+                  Add <span className="text-[var(--color-primary)]">{getLabel("Facillities", "Facillities")}</span>
                 </h1>
               </div>
 
