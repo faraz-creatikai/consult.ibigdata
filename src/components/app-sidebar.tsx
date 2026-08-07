@@ -17,6 +17,8 @@ import {
   LucideCoins,
   ShieldUser,
   Settings,
+  UsersIcon,
+  ExternalLink,
 } from "lucide-react";
 
 import { NavMain } from "../components/nav-main";
@@ -30,13 +32,14 @@ import {
 } from "@/components/ui/sidebar";
 import { title } from "process";
 import { useAuth } from "@/context/AuthContext";
-import { useCustomerFieldLabel } from "@/context/customer/CustomerFieldLabelContext";
+import { FaRobot } from "react-icons/fa";
+import { TbSocial } from "react-icons/tb";
+import { RiFilePaper2Fill } from "react-icons/ri";
+import { GrConfigure } from "react-icons/gr";
+import { sidebarLogoPath } from "@/app/data/PlatformData";
+import BrandLogo from "@/app/component/labels/BrandLogo";
 
-
-
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-   const { getLabel, labels } = useCustomerFieldLabel();
-   // This is sample data.
+// This is sample data.
 const data = {
   navMain: [
     {
@@ -65,6 +68,16 @@ const data = {
       icon: PlusSquare,
     },
     {
+      title: "External Leads",
+      url: "/minedlead",
+      icon: ExternalLink,
+    },
+        {
+      title: "Clients",
+      url: "/clients",
+      icon: UsersIcon,
+    },
+    {
       title: "Company Project",
       url: "/company_project",
       icon: User,
@@ -80,6 +93,16 @@ const data = {
       icon: Info,
     }, */
     {
+      title: "Ai Agents",
+      url: "/aiagents",
+      icon: FaRobot,
+    },
+    {
+      title:"Sales Script",
+      url: "/salesscript",
+      icon: RiFilePaper2Fill
+    },
+    {
       title: "Schedules",
       url: "/schedules",
       icon: PenSquareIcon,
@@ -88,6 +111,11 @@ const data = {
       title: "Task",
       url: "/task",
       icon: Pointer,
+    },
+    {
+      title:"Social Media Manager",
+      url:"/socialmedia-manager",
+      icon: TbSocial
     },
     {
       title: "Masters",
@@ -111,6 +139,10 @@ const data = {
           url: "/masters/customer-subtype",
         },
         {
+          title: "Lead Type",
+          url: "/masters/leadtype",
+        },
+        {
           title: "City",
           url: "/masters/city",
         },
@@ -123,7 +155,7 @@ const data = {
           url: "/masters/sublocation",
         },
         {
-          title: getLabel("Facillities", "Facillities"),
+          title: "Facilities",
           url: "/masters/facilities",
         },
         {
@@ -208,6 +240,17 @@ const data = {
       ],
     },
     {
+      title:" Reports",
+      url: "#",
+      icon: LineChart,
+      items:[
+        {
+          title: "Calling Report",
+          url: "/reports/call-report",
+        }
+      ]
+    },
+    {
       title: "Requirements",
       url: "/requirements",
       icon: Home,
@@ -252,13 +295,43 @@ const data = {
         {
           title: "Customer Fields",
           url: "/settings/customer/customer-fields",
-        },]
+        },
+        {
+          title: "CRM Branding",
+          url: "/settings/brand",
+        },
+      ]
+    },
+    {
+      title:"Configuration",
+      url:"#",
+      icon: GrConfigure,
+      items:[
+        {
+          title:"AI",
+          url:"/configuration/ai"
+        },
+        {
+          title: "Tabbly",
+          url: "/configuration/tabbly",
+        },
+        {
+          title:"whatsapp",
+          url:"/configuration/whatsapp"
+        },
+        {
+          title:"system",
+          url:"/configuration/system"
+        }
+        
+      ]
     },
     {
       title: "Users",
       url: "/users",
       icon: User2,
     },
+
     {
       title: "Customer Import",
       url: "/imports/customer",
@@ -269,11 +342,8 @@ const data = {
       url: "/imports/contact",
       icon: MessageSquare,
     },
-    /* {
-      title: "Customer Report",
-      url: "/reports/customer",
-      icon: LineChart,
-    },
+    
+    /* 
     {
       title: "Contact Report",
       url: "/reports/contact",
@@ -286,6 +356,8 @@ const data = {
     },
   ],
 };
+
+export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { state } = useSidebar();
   const { admin, isLoading } = useAuth();
   if (isLoading) return null;
@@ -294,6 +366,15 @@ const data = {
     // Hide "Masters" if not admin
     if (item.title === "Masters" && admin?.role !== "administrator") {
       return false;
+    }
+    if(item.title === "Clients" && admin?.role !== "administrator"){
+      return false;
+    }
+    if(item.title === "Ai Agents" && admin?.role !== "administrator"){
+      return false;
+    }
+    if(item.title === "Configuration" && admin?.role !== "administrator"){
+      return false
     }
     return true;
   }).map((item) => {
@@ -318,18 +399,25 @@ const data = {
   });
   return (
     <Sidebar collapsible="icon" className="" {...props}>
-      <SidebarHeader className={`flex items-center py-1 justify-center ${state === "collapsed" ? "bg-white dark:bg-[var(--color-secondary-darker)] py-4" : "bg-gray-100"}`}>
-        {/* <img src="/logo.webp" alt="App Logo" className="h-10 w-40 " /> */}
-        {state === "collapsed" ? (
-          <ShieldUser className="w-6 h-6" />
-        ) : (
-          <img
-            src="/logo.webp"
-            alt="App Logo"
-            className="h-12 w-40"
-          />
-        )}
-      </SidebarHeader>
+     <SidebarHeader
+  className={`flex items-center py-1 justify-center ${
+    state === "collapsed"
+      ? "bg-white dark:bg-[var(--color-secondary-darker)] py-4"
+      : "bg-gray-100"
+  }`}
+>
+  {state === "collapsed" ? (
+    <BrandLogo
+      variant="icon"
+      className="h-8 w-8 object-contain"
+    />
+  ) : (
+    <BrandLogo
+      variant="text"
+      className="h-12 w-40 object-contain"
+    />
+  )}
+</SidebarHeader>
       <SidebarContent>
         <NavMain items={filteredNavItems} />
       </SidebarContent>

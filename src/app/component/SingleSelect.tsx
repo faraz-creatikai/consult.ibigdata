@@ -4,10 +4,11 @@ interface OptionProps {
   className?: string;
   options: string[];
   label: string;
-  value?: string;
+  value?: string | string[];
   onChange?: (selected: string) => void;
   error?: string;
-  isSearchable?: boolean; // 🔹 NEW PROP
+  isSearchable?: boolean;
+  isMulti?: boolean;
 }
 
 export default function SingleSelect({
@@ -17,12 +18,15 @@ export default function SingleSelect({
   value,
   onChange,
   error,
-  isSearchable = false, // default false
+  isSearchable = false,
 }: OptionProps) {
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
   const containerRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
+
+  // Normalize value for display
+  const displayValue = Array.isArray(value) ? value.join(", ") : value;
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -34,11 +38,13 @@ export default function SingleSelect({
         setOpen(false);
       }
     };
+
     document.addEventListener("mousedown", handleClickOutside);
+
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Focus search input only if searchable
+  // Focus search input
   useEffect(() => {
     if (open && isSearchable) {
       setSearch("");
@@ -51,7 +57,7 @@ export default function SingleSelect({
     setOpen(false);
   };
 
-  // Filter only when searchable
+  // Filter options
   const displayedOptions = useMemo(() => {
     if (!isSearchable) return options;
 
@@ -60,7 +66,7 @@ export default function SingleSelect({
     );
   }, [options, search, isSearchable]);
 
-  const isLabelFloating = Boolean(value) || open;
+  const isLabelFloating = Boolean(displayValue) || open;
 
   return (
     <div
@@ -71,11 +77,11 @@ export default function SingleSelect({
       {/* Label */}
       <label
         className={`absolute left-3 transition-all duration-200 px-1 bg-white max-sm:dark:bg-[var(--color-childbgdark)] max-sm:dark:text-gray-400 pointer-events-none
-          ${
-            isLabelFloating
-              ? "-top-2 text-xs text-[var(--color-primary)]"
-              : "top-3 text-gray-500 text-sm"
-          }`}
+        ${
+          isLabelFloating
+            ? "-top-2 text-xs text-[var(--color-primary)]"
+            : "top-3 text-gray-500 text-sm"
+        }`}
       >
         {label}
       </label>
@@ -84,14 +90,23 @@ export default function SingleSelect({
       <div
         onClick={() => setOpen(!open)}
         className={`w-full border rounded-md px-3 py-2 cursor-pointer bg-white max-sm:dark:bg-[var(--color-childbgdark)] max-sm:dark:text-white flex justify-between items-center
-          ${
-            error ? "border-red-500" : "border-gray-400 max-sm:dark:border-gray-700"
-          } transition-colors`}
+        ${
+          error
+            ? "border-red-500"
+            : "border-gray-400 max-sm:dark:border-gray-700"
+        } transition-colors`}
         style={{ minHeight: "3rem" }}
       >
-        <span className={`${value ? "text-gray-900 max-sm:dark:text-gray-300" : "text-gray-400"} truncate`}>
-          {value || ""}
+        <span
+          className={`${
+            displayValue
+              ? "text-gray-900 max-sm:dark:text-gray-300"
+              : "text-gray-400"
+          } truncate`}
+        >
+          {displayValue || ""}
         </span>
+
         <svg
           className={`w-4 h-4 text-gray-500 transition-transform ${
             open ? "rotate-180" : ""
@@ -101,21 +116,25 @@ export default function SingleSelect({
           strokeWidth="2"
           viewBox="0 0 24 24"
         >
-          <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M19 9l-7 7-7-7"
+          />
         </svg>
       </div>
 
       {/* Dropdown */}
       <ul
         className={`absolute left-0 top-full w-full bg-white max-sm:dark:bg-[var(--color-childbgdark)] max-sm:dark:text-white shadow-lg border border-gray-300 max-sm:dark:border-gray-800 rounded-md max-h-56 overflow-auto mt-1
-          transition-all duration-200 transform origin-top z-50
-          ${
-            open
-              ? "opacity-100 scale-100 pointer-events-auto"
-              : "opacity-0 scale-95 pointer-events-none"
-          }`}
+        transition-all duration-200 transform origin-top z-50
+        ${
+          open
+            ? "opacity-100 scale-100 pointer-events-auto"
+            : "opacity-0 scale-95 pointer-events-none"
+        }`}
       >
-        {/* 🔍 Search Input (optional) */}
+        {/* Search */}
         {isSearchable && (
           <li className="sticky top-0 bg-white max-sm:dark:bg-[var(--color-childbgdark)] p-2 border-b z-10">
             <input

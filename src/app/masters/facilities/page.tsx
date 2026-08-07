@@ -14,7 +14,6 @@ import DeleteDialog from "@/app/component/popups/DeleteDialog";
 import AddButton from "@/app/component/buttons/AddButton";
 import PageHeader from "@/app/component/labels/PageHeader";
 import MasterProtectedRoute from "@/app/component/MasterProtectedRoutes";
-import { useCustomerFieldLabel } from "@/context/customer/CustomerFieldLabelContext";
 /* import { getFacilities, deleteFacility } from "@/store/facilities"; */ // future API helpers
 
 interface FacilityType {
@@ -29,7 +28,6 @@ interface DeleteDialogData {
 }
 
 export default function FacilitiesPage() {
-   const { getLabel, labels } = useCustomerFieldLabel();
   const [facilities, setFacilities] = useState<FacilityType[]>([]);
   const [keyword, setKeyword] = useState("");
   const [limit, setLimit] = useState("10");
@@ -41,7 +39,6 @@ export default function FacilitiesPage() {
 
   // Fetch facilities
   const fetchFacilities = async () => {
-     
     const data = await getFacilities();
     if (data) setFacilities(data);
     /*   const data = [
@@ -129,7 +126,7 @@ export default function FacilitiesPage() {
 
         {/* Card Container */}
         <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-200 relative">
-          <PageHeader title="Dashboard" subtitles={[getLabel("Facillities", "Facillities")]} />
+          <PageHeader title="Dashboard" subtitles={["Facilities"]} />
           {/* Add Button */}
 
           <AddButton
